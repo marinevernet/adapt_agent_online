@@ -35,8 +35,6 @@ group_nothing = [
     '170791133_170791133',
     '48303334_48303334',
     '136295119_225465923',
-    '48303334_48303334',
-    '136295119_225465923',
     '242297519_242297519',
     '179968006_179968006',
     '177624241_177624241']
@@ -103,7 +101,7 @@ for index, row in df_all_survey.iterrows():
 participants_warnings_negative = df_all_survey.loc[indices].copy()['ID']
 participants_rest_of = df_all_survey.drop(indices).copy()['ID']
 
-# you can re-run 1_group_analysis or just open the csv file created by that script
+# you can re-run 2_group_analysis.py or just open the csv file created by that script
 df_all_calculation = pd.read_csv('all_participants_results_calculation.csv')
     
 # add a column with the group classification
@@ -129,7 +127,7 @@ print('\n Significant difference between the two groups?')
 def check_group_different(title, var1, var2): # similar result with kruskal instead of mannwhitneyu
     if stats.shapiro(var1[title])[1]>0.05 and stats.shapiro(var2[title])[1]>0.05:
         a = stats.ttest_ind(var1[title], var2[title], equal_var=False) #, alternative='greater')
-        cohen_s = ((len(var1[title])-1)*np.std(var1[title])**2+(len(var2[title])-1)*np.std(var2[title])**2)/(len(var1[title])+len(var2[title])-2)
+        cohen_s = np.sqrt(((len(var1[title])-1)*np.std(var1[title], ddof=1)**2+(len(var2[title])-1)*np.std(var2[title], ddof=1)**2)/(len(var1[title])+len(var2[title])-2))
         cohen_d = np.abs(np.mean(var1[title])-np.mean(var2[title]))/cohen_s
         print('%s (t-test): t=%.2f; p=%.4f; effect size d=%.2f' %(title, a.statistic, a.pvalue, cohen_d))
 
@@ -143,7 +141,7 @@ def check_group_different(title, var1, var2): # similar result with kruskal inst
 def check_group_different_bis(title, var1, var2): # similar result with kruskal instead of mannwhitneyu
     if stats.shapiro(var1)[1]>0.05 and stats.shapiro(var2)[1]>0.05:
         a = stats.ttest_ind(var1, var2, equal_var=False) #, alternative='greater')
-        cohen_s = ((len(var1)-1)*np.std(var1)**2+(len(var2)-1)*np.std(var2)**2)/(len(var1)+len(var2)-2)
+        cohen_s = np.sqrt(((len(var1)-1)*np.std(var1, ddof=1)**2+(len(var2)-1)*np.std(var2, ddof=1)**2)/(len(var1)+len(var2)-2))
         cohen_d = np.abs(np.mean(var1)-np.mean(var2))/cohen_s
         print('%s (t-test): t(%d)=%.2f; p=%.4f; effect size d=%.2f' %(title, a.df, a.statistic, a.pvalue, cohen_d))
     else: 
@@ -176,7 +174,7 @@ print('\nSignificant decrease (warning/negative group) or increase (other) of gl
 def testing_shift(title, group, var1):
     if stats.shapiro(var1[title])[1]>0.05:
         a = stats.ttest_1samp(var1[title], 0) #, alternative='greater')
-        print('%s, %s, t-test: t(%d)=%.2f; p=%.4f; Cohen d=%.2f' % (title, group, a.df, a.pvalue, a.pvalue, np.abs(np.array(var1[title]).mean())/np.array(var1[title]).std()))
+        print('%s, %s, t-test: t(%d)=%.2f; p=%.4f; Cohen d=%.2f' % (title, group, a.df, a.statistic, a.pvalue, np.abs(np.array(var1[title]).mean())/np.array(var1[title]).std(ddof=1)))
     else: 
         # The manual calculation of the effect size for Wilcoxon was not correct (because it doesn't take into account the directionality: use pingouin instead)
         # a = stats.wilcoxon(var1[title])

@@ -24,7 +24,7 @@ def reading_data(filepath):
     df.drop(df[df['block'] <2].index, inplace = True) # remove the training trials and training block
     df.drop(df[df['block'] >7].index, inplace = True) # remove the extra-blocks, if any
     df = df[df['popupType'].apply(lambda x: isinstance(x, float))] # remove the trials with warnings
-    df.drop(df[df['timeBetweenClicks'] >0].index, inplace = True) # keep only successful algorithm
+    df.drop(df[df['timeBetweenClicks'] >= 0].index, inplace = True) # keep only successful algorithm
     # columns = ['block', 'searchTime', 'features_waitingTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'prediction_error', 'perceivedFirstClickType']
     columns = ['block', 'searchTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'features_waitingTime', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'perceivedFirstClickType']
     df = df[columns]
@@ -47,7 +47,7 @@ def fitting_one_model(df, predictors):
     return model
 
 
-# Fitting all possible combinations of models, adding the participants as random variables
+# Fitting all possible combinations of models, adding the participants as fixed-effect (dummy) predictors
 # ----------------------------------------------------------------------------------------
 def fitting_combination_models2(df, preds, preds_participants):
 
@@ -69,7 +69,7 @@ def fitting_combination_models2(df, preds, preds_participants):
             model_ind_aic.append(model.aic)
             list_of_combo.append(combo)
 
-            # add all participants as random predictors
+            # add all participants as fixed-effect (dummy) predictors
             combo=list(combo)
             for part in preds_participants:
                 combo.append(part)

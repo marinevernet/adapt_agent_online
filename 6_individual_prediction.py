@@ -37,7 +37,7 @@ def reading_data(filepath):
     df.drop(df[df['block'] <2].index, inplace = True) # remove the training trials and training block
     df.drop(df[df['block'] >7].index, inplace = True) # remove the extra-blocks, if any
     df = df[df['popupType'].apply(lambda x: isinstance(x, float))] # remove the trials with warnings
-    df.drop(df[df['timeBetweenClicks'] >0].index, inplace = True) # keep only successful algorithm
+    df.drop(df[df['timeBetweenClicks'] >= 0].index, inplace = True) # keep only successful algorithm
     # columns = ['block', 'searchTime', 'features_waitingTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'prediction_error', 'perceivedFirstClickType']
     columns = ['block', 'searchTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'features_waitingTime', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'perceivedFirstClickType']
     df = df[columns]
@@ -141,7 +141,7 @@ if len(_ID) > 0:
     for combo_nb, combo in enumerate(combo_list):
         print(combo)
         print(individual_auc[combo_nb])
-    np.save('combo_list.npy', combo_list)
+    np.save('combo_list.npy', np.array([list(combo) for combo in combo_list], dtype=object), allow_pickle=True)
 
 else: 
 
@@ -149,7 +149,7 @@ else:
         group_auc, combo_list = analyseSubjects(label, pred_colums2)
         group_auc = np.array(group_auc)
         np.save('group_auc.npy', group_auc)
-        np.save('combo_list.npy', combo_list)
+        np.save('combo_list.npy', np.array([list(combo) for combo in combo_list], dtype=object), allow_pickle=True)
     else:
         group_auc = np.load('group_auc.npy')
         combo_list = np.load('combo_list.npy', allow_pickle=True)
@@ -166,40 +166,44 @@ else:
         stattestbest = 'wilcoxon'
         abest = pg.wilcoxon(ordered_group_auc[:,0]-0.5)
 
+    # paired, one-sided tests (all combinations are evaluated on the same participants):
+    # is the best combination better than each of the other combinations?
+    # all combinations are tested (no stopping at the first significant one)
+    equivalent_combos = [0] # the best combination itself
     for combo_nb in np.arange(1, len(sorted_indices)):
 
-        if stats.shapiro(ordered_group_auc[:,0])[1]>0.05 and stats.shapiro(ordered_group_auc[:,combo_nb])[1]>0.05:
-            stattest = 'ttest'
-            a = stats.ttest_ind(ordered_group_auc[:,0], ordered_group_auc[:,combo_nb], equal_var=False) #, alternative='greater')
+        if stats.shapiro(ordered_group_auc[:,0]-ordered_group_auc[:,combo_nb])[1]>0.05:
+            stattest = 'paired ttest'
+            a = stats.ttest_rel(ordered_group_auc[:,0], ordered_group_auc[:,combo_nb], alternative='greater')
         else: 
-            stattest = 'mannwhitneyu'
-            a = stats.mannwhitneyu(ordered_group_auc[:,0], ordered_group_auc[:,combo_nb])
+            stattest = 'wilcoxon'
+            a = stats.wilcoxon(ordered_group_auc[:,0], ordered_group_auc[:,combo_nb], alternative='greater')
         
-        if a.pvalue < 0.05:
-            print(combo_nb)
-            max_combo_nb = combo_nb
-            break
+        if a.pvalue >= 0.05:
+            equivalent_combos.append(combo_nb)
+
+    nb_equivalent_combos = len(equivalent_combos)
 
     count_dict = {element:0 for element in pred_colums2}
     for preds in pred_colums2:
-        for combo_nb in np.arange(max_combo_nb):       
+        for combo_nb in equivalent_combos:       
             if preds in ordered_combo_list[combo_nb]:
                 count_dict[preds] += 1
-        count_dict[preds] = count_dict[preds]/(max_combo_nb+1)
+        count_dict[preds] = count_dict[preds]/nb_equivalent_combos
 
     both_TBC_and_block = 0
     only_TBC = 0
     only_block = 0
-    for combo_nb in np.arange(max_combo_nb):       
+    for combo_nb in equivalent_combos:       
         if 'block' in ordered_combo_list[combo_nb] and 'timeBetweenClicks' in ordered_combo_list[combo_nb]:
             both_TBC_and_block += 1
         elif 'block' in ordered_combo_list[combo_nb] and 'timeBetweenClicks' not in ordered_combo_list[combo_nb]:
-            only_TBC += 1
-        elif 'block' not in ordered_combo_list[combo_nb] and 'timeBetweenClicks' in ordered_combo_list[combo_nb]:
             only_block += 1
-    both_TBC_and_block = both_TBC_and_block/(max_combo_nb+1)
-    only_TBC = only_TBC/(max_combo_nb+1)
-    only_block = only_block/(max_combo_nb+1)
+        elif 'block' not in ordered_combo_list[combo_nb] and 'timeBetweenClicks' in ordered_combo_list[combo_nb]:
+            only_TBC += 1
+    both_TBC_and_block = both_TBC_and_block/nb_equivalent_combos
+    only_TBC = only_TBC/nb_equivalent_combos
+    only_block = only_block/nb_equivalent_combos
 
     # Format the dictionary values and sort it
     def format_float(value):
@@ -213,9 +217,9 @@ else:
     print('number of participants analyzed= ' + str(len(group_auc)))
 
     print('\nbest decoding:')
-    print('AUC = %.2f +/- %2f' % (ordered_group_auc[:,0].mean(), ordered_group_auc[:,0].std()))
+    print('AUC = %.2f +/- %.2f' % (ordered_group_auc[:,0].mean(), ordered_group_auc[:,0].std(ddof=1)))
     if stattestbest == 'ttest':
-        print('ttest t(%d)=%.2f; p=%.4f; cohen d=%.2f' % (abest.df, abest.statistic, abest.pvalue, (ordered_group_auc[:,0].mean()-0.5)/ordered_group_auc[:,0].std()))
+        print('ttest t(%d)=%.2f; p=%.4f; cohen d=%.2f' % (abest.df, abest.statistic, abest.pvalue, (ordered_group_auc[:,0].mean()-0.5)/ordered_group_auc[:,0].std(ddof=1)))
     elif stattestbest == 'wilcoxon':
         # print('wilcoxon t=%.2f; p=%.4f; effect size r(rb)=%.2f' % (abest.statistic, abest.pvalue, 1-(2*abest.statistic/(len(ordered_group_auc[:,0])*(len(ordered_group_auc[:,0])+1)))))    
         print('wilcoxon t=%.2f; p=%.4f; effect size r(rb)=%.2f' % (abest['W-val'].Wilcoxon, abest['p-val'].Wilcoxon, abest['RBC'].Wilcoxon))    
@@ -223,7 +227,8 @@ else:
     # print('pvalue (%s) = %.4f' % (stattestbest, abest.pvalue))
     print(ordered_combo_list[0])
 
-    print('\nthere are %d (out of %d) combinations having the same decoding performance than the best one' % (max_combo_nb, len(group_auc_mean)))
+    print('\nthere are %d (out of %d) combinations, including the best one, that are not significantly worse than the best one' % (nb_equivalent_combos, len(group_auc_mean)))
+    print('(rank of the worst of these combinations: %d)' % (max(equivalent_combos)+1))
     print('and here is the ratio of these combinations containing each of the predictor')
     pp = pprint.PrettyPrinter(width=56, compact=True)
     pp.pprint(ordered_dict)
@@ -245,17 +250,29 @@ else:
 # ['block' 'peakSpeed' 'distanceToTargetWhenVirtualClick'
 #  'timeBetweenClicks']
 
-# there are 751 combinations having the same decoding performance than the best one
-# and here is the ratio of these combinations containing each of the predictor
-# OrderedDict([('block', 0.85),
-#              ('timeBetweenClicks', 0.83),
-#              ('humanClickTime', 0.59),
-#              ('virtualClickTime', 0.58),
-#              ('peakSpeed', 0.52),
-#              ('distanceToTargetWhenVirtualClick', 0.52),
-#              ('distanceToTargetWhenHumanClick', 0.51),
-#              ('waitingTime', 0.5),
-#              ('accelerationTime', 0.48),
-#              ('distance', 0.47), ('searchTime', 0.43)])
+# there are 13 (out of 2047) combinations, including the best one, that are not significantly worse than the best one
+# (paired one-sided tests, every combination tested, no correction for multiple comparisons)
+# (rank of the worst of these combinations: 122)
+# OrderedDict([('block', 1.0),
+#              ('timeBetweenClicks', 0.85),
+#              ('distanceToTargetWhenHumanClick', 0.46),
+#              ('distanceToTargetWhenVirtualClick', 0.38),
+#              ('peakSpeed', 0.31),
+#              ('accelerationTime', 0.23),
+#              ('humanClickTime', 0.15),
+#              ('virtualClickTime', 0.15),
+#              ('searchTime', 0.08), ('distance', 0.0),
+#              ('waitingTime', 0.0)])
 # Here is the ratio of these combinations containing both block and TBC:
-# 0.6808510638297872
+# 0.8461538461538461
+# Here is the ratio of these combinations containing only TBC:
+# 0.0
+# Here is the ratio of these combinations containing only block:
+# 0.15384615384615385
+
+# previous version (unpaired tests, ttest_ind / mannwhitneyu, stopping at the first significant difference):
+# there were 751 combinations having the same decoding performance than the best one
+# block 0.85, timeBetweenClicks 0.83, humanClickTime 0.59, virtualClickTime 0.58, peakSpeed 0.52,
+# distanceToTargetWhenVirtualClick 0.52, distanceToTargetWhenHumanClick 0.51, waitingTime 0.5,
+# accelerationTime 0.48, distance 0.47, searchTime 0.43
+# both block and TBC 0.68 (only TBC 0.15, only block 0.17, after correcting the swapped labels)

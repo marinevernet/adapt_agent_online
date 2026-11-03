@@ -61,7 +61,7 @@ def analyseSubject(ID):
     num_trials_witout_warning = len(df)
     num_trials_with_warning = num_total_trial - num_trials_witout_warning
     num_perceived_click_first = len(df[df['perceivedFirstClickType']==1])
-    df.drop(df[df['timeBetweenClicks'] >0].index, inplace = True) # keep only successful algorithm
+    df.drop(df[df['timeBetweenClicks'] >= 0].index, inplace = True) # keep only successful algorithm
     num_successful_trials1 = len(df)
     num_unsuccessful_trials = num_trials_witout_warning - num_successful_trials1
     columns = ['block', 'searchTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'features_waitingTime', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'perceivedFirstClickType']
@@ -120,9 +120,9 @@ _last10_withoutClick = np.array(_last10_withoutClick)
 _last10_TBC = np.array(_last10_TBC)
 
 print('\nLast ten trials of the training block')
-print('average virtual click time = ' + str(_last10_VCT.mean()) + ' +/- ' + str(_last10_VCT.std()))
-print('ratio of trials without human click = ' + str(_last10_withoutClick.mean()) + ' +/- ' + str(_last10_withoutClick.std()))
-print('when human click, average time between clicks = ' + str(np.nanmean(_last10_TBC)) + ' +/- ' + str(np.nanstd(_last10_TBC)))
+print('average virtual click time = ' + str(_last10_VCT.mean()) + ' +/- ' + str(_last10_VCT.std(ddof=1)))
+print('ratio of trials without human click = ' + str(_last10_withoutClick.mean()) + ' +/- ' + str(_last10_withoutClick.std(ddof=1)))
+print('when human click, average time between clicks = ' + str(np.nanmean(_last10_TBC)) + ' +/- ' + str(np.nanstd(_last10_TBC, ddof=1)))
 
 
 _num_total_trial = np.array(_num_total_trial)
@@ -137,23 +137,23 @@ _average_virtualClickTime = np.array(_average_virtualClickTime)
 ratio_successful_trials = _num_successful_trials/480
 
 print('\nDuring the experimental blocks')
-print('number of total trial = ' + str(_num_total_trial.mean()) + ' +/- ' + str(_num_total_trial.std()))
-print('number of trials with warnings = ' + str(_num_trials_with_warning.mean()) + ' +/- ' + str(_num_trials_with_warning.std()))
-print('number of perceived click first (over 480) = ' + str(_num_perceived_click_first.mean())+ ' +/- ' + str(_num_perceived_click_first.std()))
+print('number of total trial = ' + str(_num_total_trial.mean()) + ' +/- ' + str(_num_total_trial.std(ddof=1)))
+print('number of trials with warnings = ' + str(_num_trials_with_warning.mean()) + ' +/- ' + str(_num_trials_with_warning.std(ddof=1)))
+print('number of perceived click first (over 480) = ' + str(_num_perceived_click_first.mean())+ ' +/- ' + str(_num_perceived_click_first.std(ddof=1)))
 print('minimum and maximum number of perceived click first (over 480) = ' + str(_num_perceived_click_first.min())+ ' - ' + str(_num_perceived_click_first.max()))
-print('number of unsuccessful trials (no virtucal click before human click) = ' + str(_num_unsuccessful_trials.mean()) + ' +/- ' + str(_num_unsuccessful_trials.std()))
-print('number of nan trials (participant not clicking) = ' + str(_num_nan_trials.mean()) + ' +/- ' + str(_num_nan_trials.std()))
-print('number of successful trials (virtual click before human click) = ' + str(_num_successful_trials.mean()) + ' +/- ' + str(_num_successful_trials.std()))
-print('ratio successful trials (virtual click before human click) = ' + str(ratio_successful_trials.mean()) + ' +/- ' + str(ratio_successful_trials.std()))
-print('average time between click = ' + str(_average_timeBetweekClick.mean()) + ' +/- ' + str(_average_timeBetweekClick.std()))
-print('average virtual click time = ' + str(_average_virtualClickTime.mean()) + ' +/- ' + str(_average_virtualClickTime.std()))
+print('number of unsuccessful trials (no virtucal click before human click) = ' + str(_num_unsuccessful_trials.mean()) + ' +/- ' + str(_num_unsuccessful_trials.std(ddof=1)))
+print('number of nan trials (participant not clicking) = ' + str(_num_nan_trials.mean()) + ' +/- ' + str(_num_nan_trials.std(ddof=1)))
+print('number of successful trials (virtual click before human click) = ' + str(_num_successful_trials.mean()) + ' +/- ' + str(_num_successful_trials.std(ddof=1)))
+print('ratio successful trials (virtual click before human click) = ' + str(ratio_successful_trials.mean()) + ' +/- ' + str(ratio_successful_trials.std(ddof=1)))
+print('average time between click = ' + str(_average_timeBetweekClick.mean()) + ' +/- ' + str(_average_timeBetweekClick.std(ddof=1)))
+print('average virtual click time = ' + str(_average_virtualClickTime.mean()) + ' +/- ' + str(_average_virtualClickTime.std(ddof=1)))
 
 
 _durationGame = np.array(_durationGame)
 _durationExperimentalBlocks = np.array(_durationExperimentalBlocks)
 
 print('\nDuration of the game')
-print('Entire game = ' + str(_durationGame.mean()) + ' +/- ' + str(_durationGame.std()))
-print('Experimental blocks = ' + str(_durationExperimentalBlocks.mean()) + ' +/- ' + str(_durationExperimentalBlocks.std()))
+print('Entire game = ' + str(_durationGame.mean()) + ' +/- ' + str(_durationGame.std(ddof=1)))
+print('Experimental blocks = ' + str(_durationExperimentalBlocks.mean()) + ' +/- ' + str(_durationExperimentalBlocks.std(ddof=1)))
 
 

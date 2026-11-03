@@ -37,7 +37,7 @@ def reading_data(filepath):
     df.drop(df[df['block'] <2].index, inplace = True) # remove the training trials and training block
     df.drop(df[df['block'] >7].index, inplace = True) # remove the extra-blocks, if any
     df = df[df['popupType'].apply(lambda x: isinstance(x, float))] # remove the trials with warnings
-    df.drop(df[df['timeBetweenClicks'] >0].index, inplace = True) # keep only successful algorithm
+    df.drop(df[df['timeBetweenClicks'] >= 0].index, inplace = True) # keep only successful algorithm
     columns = ['block', 'searchTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'features_waitingTime', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'perceivedFirstClickType']
     df = df[columns]
     df = df.rename(columns={'features_peakSpeed': 'peakSpeed', 'features_accelerationTime': 'accelerationTime', 'features_distance': 'distance', 'features_waitingTime': 'waitingTime'})
@@ -179,29 +179,54 @@ for nb_components in np.arange(1,len(pred_colums2)+1):
 
     if stats.shapiro(auc)[1]>0.05:
         a = stats.ttest_1samp(auc, 0.5) #, alternative='greater')
-        print('Decoding: AUC = %.2f +/- %.2f; ttest t(%d)=%.2f; p=%.4f; cohen d=%.2f' % (auc.mean(), auc.std(), a.df, a.statistic, a.pvalue, (auc.mean()-0.5)/auc.std()))
+        print('Decoding: AUC = %.2f +/- %.2f; ttest t(%d)=%.2f; p=%.4f; cohen d=%.2f' % (auc.mean(), auc.std(ddof=1), a.df, a.statistic, a.pvalue, (auc.mean()-0.5)/auc.std(ddof=1)))
     else: 
         # a = stats.wilcoxon(auc-0.5*np.ones(len(auc)))
         # effect_size_rb = 1-(2*a.statistic/(len(auc)*(len(auc+1))))
-        # print('Decoding: AUC = %.2f +/- %.2f; Wilcoxon t=%.10f; p=%.4f; effect size r(rb)=%.2f' % (auc.mean(), auc.std(), a.statistic, a.pvalue,  effect_size_rb))
+        # print('Decoding: AUC = %.2f +/- %.2f; Wilcoxon t=%.10f; p=%.4f; effect size r(rb)=%.2f' % (auc.mean(), auc.std(ddof=1), a.statistic, a.pvalue,  effect_size_rb))
         a = pg.wilcoxon(auc-0.5*np.ones(len(auc)))
-        print('Decoding: AUC = %.2f +/- %.2f; Wilcoxon t=%.10f; p=%.4f; effect size r(rb)=%.2f' % (auc.mean(), auc.std(), a['W-val'].Wilcoxon, a['p-val'].Wilcoxon,  a['RBC'].Wilcoxon))
+        print('Decoding: AUC = %.2f +/- %.2f; Wilcoxon t=%.10f; p=%.4f; effect size r(rb)=%.2f' % (auc.mean(), auc.std(ddof=1), a['W-val'].Wilcoxon, a['p-val'].Wilcoxon,  a['RBC'].Wilcoxon))
     
 
 all_auc = np.array(all_auc) 
 
-print('\nMaximum decoding performance is calculated with 11 components')
-for nb_components in np.arange(1,len(pred_colums2)):
+# paired tests: all numbers of components are evaluated on the same participants
+# one-sided: is the decoding in auc1 better than the decoding in auc2?
+def paired_test_greater(auc1, auc2):
+    if stats.shapiro(auc1-auc2)[1]>0.05:
+        a = stats.ttest_rel(auc1, auc2, alternative='greater')
+        stat_text = 'paired ttest t(%d)=%.2f; p=%.4f' % (a.df, a.statistic, a.pvalue)
+    else:
+        a = stats.wilcoxon(auc1, auc2, alternative='greater')
+        stat_text = 'Wilcoxon t=%.2f; p=%.4f' % (a.statistic, a.pvalue)
+    return a.pvalue, stat_text
 
-    if stats.shapiro(all_auc[-1])[1]>0.05 and stats.shapiro(all_auc[-1-nb_components])[1]>0.05:
-        a = stats.ttest_ind(all_auc[-1], all_auc[-1-nb_components], equal_var=False) #, alternative='greater')
-    else: 
-        a = stats.mannwhitneyu(all_auc[-1], all_auc[-1-nb_components])
-    
-    if a.pvalue < 0.05:
-        print('%d component(s) is/are not sufficient for maximum decoding performance' % (len(pred_colums2)-nb_components))
-    else:    
-        print('%d components also give maximum decoding performance' % (len(pred_colums2)-nb_components))
+# comparing each number of components to the maximum decoding performance
+best_idx = np.argmax(all_auc.mean(axis=1))
+ceiling_idx = best_idx # smallest number of components not significantly lower than the maximum
+print('\nMaximum decoding performance is obtained with %d components: AUC = %.2f +/- %.2f' % (best_idx+1, all_auc[best_idx].mean(), all_auc[best_idx].std(ddof=1)))
+for idx in np.arange(len(pred_colums2)):
+
+    if idx == best_idx: continue
+
+    pvalue, stat_text = paired_test_greater(all_auc[best_idx], all_auc[idx])
+
+    if pvalue < 0.05:
+        print('%d component(s): significantly lower than the maximum decoding performance (AUC = %.2f +/- %.2f; %s)' % (idx+1, all_auc[idx].mean(), all_auc[idx].std(ddof=1), stat_text))
+    else:
+        print('%d component(s): not significantly different from the maximum decoding performance (AUC = %.2f +/- %.2f; %s)' % (idx+1, all_auc[idx].mean(), all_auc[idx].std(ddof=1), stat_text))
+        ceiling_idx = min(ceiling_idx, idx)
+
+# comparing each larger number of components to the ceiling (does adding components further increase the decoding?)
+print('\nCeiling reached with %d components: AUC = %.2f +/- %.2f' % (ceiling_idx+1, all_auc[ceiling_idx].mean(), all_auc[ceiling_idx].std(ddof=1)))
+for idx in np.arange(ceiling_idx+1, len(pred_colums2)):
+
+    pvalue, stat_text = paired_test_greater(all_auc[idx], all_auc[ceiling_idx])
+
+    if pvalue < 0.05:
+        print('%d components: significantly higher than with %d components (AUC = %.2f +/- %.2f; %s)' % (idx+1, ceiling_idx+1, all_auc[idx].mean(), all_auc[idx].std(ddof=1), stat_text))
+    else:
+        print('%d components: not significantly higher than with %d components (AUC = %.2f +/- %.2f; %s)' % (idx+1, ceiling_idx+1, all_auc[idx].mean(), all_auc[idx].std(ddof=1), stat_text))
 
 
 
@@ -228,8 +253,8 @@ mask = (df_pca_components.transpose() > 0.3) | (df_pca_components.transpose() < 
 pc_index = ['PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7', 'PC8', 'PC9', 'PC10', 'PC11']
 
 # Calculate upper and lower bounds for shading
-upper_bound = [mean + std for mean, std in zip(all_auc.mean(axis=1), all_auc.std(axis=1))]
-lower_bound = [mean - std for mean, std in zip(all_auc.mean(axis=1), all_auc.std(axis=1))]
+upper_bound = [mean + std for mean, std in zip(all_auc.mean(axis=1), all_auc.std(axis=1, ddof=1))]
+lower_bound = [mean - std for mean, std in zip(all_auc.mean(axis=1), all_auc.std(axis=1, ddof=1))]
 
 # Calculate cumulative explained variance
 cumulative_explained_variance = np.zeros(11)
@@ -265,9 +290,9 @@ for i in range(mask.shape[0]):
         if mask.iloc[i,j]:
             ax2.text(j + 0.5, i + 0.5, f'{df_pca_components.transpose().iloc[i,j]:.2f}', ha='center', va='center', fontsize=10, color='black')
 # Define the coordinates for the square
-x_start, x_end = 0, 4
+x_start, x_end = 0, 6
 y_start, y_end = 0, 11
-# Draw a red rectangle around the specified region
+# Draw a black rectangle around the first six components
 ax2.hlines(y=y_start, xmin=x_start, xmax=x_end, colors='black', linewidth=4)
 ax2.hlines(y=y_end, xmin=x_start, xmax=x_end, colors='black', linewidth=4)
 ax2.vlines(x=x_start, ymin=y_start, ymax=y_end, colors='black', linewidth=4)

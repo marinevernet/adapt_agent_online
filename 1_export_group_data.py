@@ -63,6 +63,7 @@ def extract_one_line_participant_exp_data(ID):
     distanceToTargetWhenHumanClick = list()
     distanceToTargetWhenVirtualClick = list()
     predictionError = list()
+    predictionErrorSD = list()
 
     totalTrials = list()
     keptTrials = list()
@@ -135,12 +136,15 @@ def extract_one_line_participant_exp_data(ID):
 
             predictionError.append(df_good_block['prediction_error'].mean())
 
+            predictionErrorSD.append(df_good_block['prediction_error'].std())
+
     variables = {
         'startTime': startTime, 'endTime': endTime, 'searchTime': searchTime, 'waitingTime': waitingTime, 'peakSpeed': peakSpeed, 'accelerationTime': accelerationTime, 'distance': distance, \
         'humanClickTime': humanClickTime, 'virtualClickTime': virtualClickTime, 'distanceToTargetWhenHumanClick': distanceToTargetWhenHumanClick, 'distanceToTargetWhenVirtualClick': distanceToTargetWhenVirtualClick, \
         'mean_time': mean_time, 'mean_SoA': mean_SoA, 'mean_time_H': mean_time_H, 'mean_time_M': mean_time_M,     
         'predictionError': predictionError, \
-        'totalTrials': totalTrials, 'keptTrials': keptTrials, 'goodTrials': goodTrials, 'MH_H': MH_H, 'MH_M': MH_M, 'HM_H': HM_H, 'HM_M': HM_M, 'H__H': H__H, 'H__M': H__M, 'M__H': M__H, 'M__M': M__M\
+        'totalTrials': totalTrials, 'keptTrials': keptTrials, 'goodTrials': goodTrials, 'MH_H': MH_H, 'MH_M': MH_M, 'HM_H': HM_H, 'HM_M': HM_M, 'H__H': H__H, 'H__M': H__M, 'M__H': M__H, 'M__M': M__M, \
+        'predictionErrorSD': predictionErrorSD\
         }        
 
     return variables
@@ -220,7 +224,8 @@ columns = ['ID', 'age', 'sex', 'hand', 'I', 'PO', 'C',
 'H__H1', 'H__H2', 'H__H3', 'H__H4', 'H__H5', 'H__H6',
 'H__M1', 'H__M2', 'H__M3', 'H__M4', 'H__M5', 'H__M6',
 'M__H1', 'M__H2', 'M__H3', 'M__H4', 'M__H5', 'M__H6',
-'M__M1', 'M__M2', 'M__M3', 'M__M4', 'M__M5', 'M__H6'
+'M__M1', 'M__M2', 'M__M3', 'M__M4', 'M__M5', 'M__M6',
+'predictionErrorSD1', 'PESD2', 'PESD3', 'PESD4', 'PESD5', 'PESD6'
 ]
 
 columnsSurvey = ['ID', 'postTraining', 'postExp1', 'postExp2']

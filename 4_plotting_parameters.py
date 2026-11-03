@@ -15,7 +15,7 @@ _ID = ""
 choice_to_plot = 3 # single plot including data from all participants
 
 # _pred_colums2 = ['block', 'searchTime', 'peakSpeed', 'accelerationTime', 'distance', 'waitingTime', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks']
-_pred_colums2 = ['Block', 'Search Time', 'Peak Speed', 'Distance \nat Start', 'Distance \nat Human Click', 'Distance \nat Virtual Click', 'Time Between Clicks']
+_pred_colums2 = ['Block', 'Search\nTime (ms)', 'Peak Speed\n(px/ms)', 'Distance\nat Start\n(px)', 'Distance at\nHuman\nClick (px)', 'Distance at\nVirtual\nClick (px)', 'Time\nBetween\nClicks (ms)']
 _choice_of_labels = 'local SoA'
 
 # Set a global default font weight for labels
@@ -23,6 +23,9 @@ plt.rcParams['axes.labelweight'] = 'bold'
 # Set a global default font weight and size for all text elements
 plt.rcParams['font.weight'] = 'bold'
 plt.rcParams['font.size'] = 14
+plt.rcParams['axes.labelsize'] = 24
+plt.rcParams['xtick.labelsize'] = 16
+plt.rcParams['ytick.labelsize'] = 16
 
 # ******************* FUNCTIONS ***************
 
@@ -35,13 +38,14 @@ def reading_data(filepath):
     df.drop(df[df['block'] <2].index, inplace = True) # remove the training trials and training block
     df.drop(df[df['block'] >7].index, inplace = True) # remove the extra-blocks, if any
     df = df[df['popupType'].apply(lambda x: isinstance(x, float))] # remove the trials with warnings
-    df.drop(df[df['timeBetweenClicks'] >0].index, inplace = True) # keep only successful algorithm
+    df.drop(df[df['timeBetweenClicks'] >= 0].index, inplace = True) # keep only successful algorithm
     # columns = ['block', 'searchTime', 'features_waitingTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'prediction_error', 'perceivedFirstClickType']
     columns = ['block', 'searchTime', 'features_peakSpeed', 'features_accelerationTime', 'features_distance', 'features_waitingTime', 'humanClickTime', 'virtualClickTime', 'distanceToTargetWhenHumanClick', 'distanceToTargetWhenVirtualClick', 'timeBetweenClicks', 'perceivedFirstClickType']
     df = df[columns]
-    df = df.rename(columns={'features_peakSpeed': 'Peak Speed', 'features_accelerationTime': 'Acceleration Time', 'features_distance': 'Distance \nat Start', 'features_waitingTime': 'Waiting Time'})
-    df = df.rename(columns={'block': 'Block', 'searchTime': 'Search Time', 'distanceToTargetWhenHumanClick': 'Distance \nat Human Click', 'distanceToTargetWhenVirtualClick': 'Distance \nat Virtual Click', 'timeBetweenClicks': 'Time Between Clicks', 'perceivedFirstClickType': 'local SoA'})
+    df = df.rename(columns={'features_peakSpeed': 'Peak Speed\n(px/ms)', 'features_accelerationTime': 'Acceleration\nTime (ms)', 'features_distance': 'Distance\nat Start\n(px)', 'features_waitingTime': 'Waiting\nTime (ms)'})
+    df = df.rename(columns={'block': 'Block', 'searchTime': 'Search\nTime (ms)', 'distanceToTargetWhenHumanClick': 'Distance at\nHuman\nClick (px)', 'distanceToTargetWhenVirtualClick': 'Distance at\nVirtual\nClick (px)', 'timeBetweenClicks': 'Time\nBetween\nClicks (ms)', 'perceivedFirstClickType': 'local SoA'})
     df = df.dropna()
+    df['Block'] = df['Block'] - 1 # experimental blocks numbered 1 to 6 (block 1 of the file is the training block)
 
     return df
 
@@ -120,14 +124,15 @@ if choice_to_plot == 3:
             continue
 
     df_all['local SoA'] = df_all['local SoA'].astype(int)
-    g = sns.pairplot(df_all, hue="local SoA", corner=True)
+    g = sns.pairplot(df_all, hue="local SoA", corner=True, height=3.5)
+    g.axes[-1, 0].set_xticks(np.arange(1, 7))
 
     # Move the legend to a specific position and size
     legend = g._legend
     legend.set_bbox_to_anchor((0.8, 0.6))
-    legend.set_title(title="local SoA", prop={"size": 20})  # Change the font size (adjust as needed)
+    legend.set_title(title="local SoA", prop={"size": 26})  # Change the font size (adjust as needed)
     for label in legend.get_texts():
-        label.set_fontsize(20)
+        label.set_fontsize(26)
 
     plt.savefig('parameters_only_significant_all_players.png')
     plt.show()

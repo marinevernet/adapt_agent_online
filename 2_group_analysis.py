@@ -3,6 +3,7 @@ import sre_compile
 import numpy as np
 import pandas as pd
 import os.path as op
+import os
 import matplotlib.pyplot as plt
 import pingouin as pg
 import seaborn as sns
@@ -17,10 +18,14 @@ import math
 with open('1_export_group_data.py') as f:
     exec(f.read())
 
+# folder where the figures are saved
+_figureDirectory = 'figures'
+os.makedirs(_figureDirectory, exist_ok=True)
+
 # ************* Definition of functions **************************************
 
 
-def plot_the_violins(array_to_plot1, array_to_plot2, ylabel, subplot_line, subplot_column, subplot_nb, deletexlabel):
+def plot_the_violins(array_to_plot1, array_to_plot2, ylabel, subplot_line, subplot_column, subplot_nb, deletexlabel, show_grand_mean=False):
 
     # Prepare a Panda data frame
     dataViolin = pd.DataFrame({'block 1': array_to_plot1[:,0], 'block 2': array_to_plot1[:,1], 'block 3': array_to_plot1[:,2], 'block 4': array_to_plot1[:,3], 'block 5': array_to_plot1[:,4], 'block 6': array_to_plot1[:,5]})
@@ -43,6 +48,10 @@ def plot_the_violins(array_to_plot1, array_to_plot2, ylabel, subplot_line, subpl
     sns.stripplot(x='distribution', y='value', data=data_melt, jitter=True, color='black', size=2, ax=plt.gca())
 
     plt.plot([0, 1, 2, 3, 4, 5], [np.mean(array_to_plot1[:,0]), np.mean(array_to_plot1[:,1]), np.mean(array_to_plot1[:,2]), np.mean(array_to_plot1[:,3]), np.mean(array_to_plot1[:,4]), np.mean(array_to_plot1[:,5])], color='black', alpha=1, linewidth=2)
+
+    # Add the grand mean (all participants and blocks) as a dotted line across the whole panel
+    if show_grand_mean:
+        plt.gca().axhline(np.nanmean(array_to_plot1), color='black', linestyle=':', linewidth=1.5)
 
     # Connect dots for repeated measures
     for pnb in range(1, len(array_to_plot1)+1): #range(1, n_patients+1):
@@ -68,10 +77,10 @@ def testing_against_0(var1, title):
 
     if stats.shapiro(var1)[1]>0.05:
         a = stats.ttest_1samp(var1, 0) 
-        print(title +  ': mean = %.2f +/- %.2f; (t-test) t(%d) = %.2f; p = %.4f; Cohen d=%.2f' % (np.array(var1).mean(), np.array(var1).std(), a.df, a.statistic, a.pvalue, np.array(var1).mean()/np.array(var1).std()))
+        print(title +  ': mean = %.2f +/- %.2f; (t-test) t(%d) = %.2f; p = %.4f; Cohen d=%.2f' % (np.array(var1).mean(), np.array(var1).std(ddof=1), a.df, a.statistic, a.pvalue, np.array(var1).mean()/np.array(var1).std(ddof=1)))
     else: 
         a2 = pg.wilcoxon(var1)
-        print(title +  ': mean = %.2f +/- %.2f; (pingouin Wilcoxon) t = %.2f; p = %.4f; effect size r(rb)=%.2f' % (np.array(var1).mean(), np.array(var1).std(), a2['W-val'].Wilcoxon, a2['p-val'].Wilcoxon, a2['RBC'].Wilcoxon))
+        print(title +  ': mean = %.2f +/- %.2f; (pingouin Wilcoxon) t = %.2f; p = %.4f; effect size r(rb)=%.2f' % (np.array(var1).mean(), np.array(var1).std(ddof=1), a2['W-val'].Wilcoxon, a2['p-val'].Wilcoxon, a2['RBC'].Wilcoxon))
 
 def fitting_function(var1, var2, list1, list2):
 
@@ -112,6 +121,8 @@ virtualClickTime = np.array(df_all[[ 'virtualClickTime1', 'VCT2', 'VCT3', 'VCT4'
 distanceAtStart = np.array(df_all[[ 'D1', 'D2', 'D3', 'D4', 'D5', 'D6']]).astype(float) # no change
 distanceAtHumanClick = np.array(df_all[[ 'DTTHC1', 'DTTHC2', 'DTTHC3', 'DTTHC4', 'DTTHC5', 'DTTHC6']]).astype(float) # maybe (does not resist correct for MC)
 distanceAtVirtualClick = np.array(df_all[[ 'distanceToTargetWhenVirtualClick1', 'DTTVC2', 'DTTVC3', 'DTTVC4', 'DTTVC5', 'DTTVC6']]).astype(float) # maybe (does not resist correct for MC)
+predictionError = np.array(df_all[[ 'predictionError1', 'PE2', 'PE3', 'PE4', 'PE5', 'PE6']]).astype(float) # predicted minus actual human click time
+predictionErrorSD = np.array(df_all[[ 'predictionErrorSD1', 'PESD2', 'PESD3', 'PESD4', 'PESD5', 'PESD6']]).astype(float) # variability of the prediction error
 
 # ****** initiate lists ******
 
@@ -143,6 +154,10 @@ distanceAtHumanClick_mean = list()
 distanceAtHumanClick_fit = list()
 distanceAtVirtualClick_mean = list()
 distanceAtVirtualClick_fit = list()
+predictionError_mean = list()
+predictionError_fit = list()
+predictionErrorSD_mean = list()
+predictionErrorSD_fit = list()
 
 global_confidence_mean = list()
 
@@ -160,6 +175,8 @@ corr_coeff_virtualClickTime_uncorrected = list()
 corr_coeff_distanceAtStart_uncorrected = list()
 corr_coeff_distanceAtHumanClick_uncorrected = list()
 corr_coeff_distanceAtVirtualClick_uncorrected = list()
+corr_coeff_predictionError_uncorrected = list()
+corr_coeff_predictionErrorSD_uncorrected = list()
 
 residuals_time_SoA_list = list()
 residuals_time_global_SoA_list = list()
@@ -202,6 +219,8 @@ for subject in range(len(time)):
     distanceAtStart_fit, distanceAtStart_mean = fitting_function(blocks[:], distanceAtStart[subject, :], distanceAtStart_fit, distanceAtStart_mean)
     distanceAtHumanClick_fit, distanceAtHumanClick_mean = fitting_function(blocks[:], distanceAtHumanClick[subject, :], distanceAtHumanClick_fit, distanceAtHumanClick_mean)
     distanceAtVirtualClick_fit, distanceAtVirtualClick_mean = fitting_function(blocks[:], distanceAtVirtualClick[subject, :], distanceAtVirtualClick_fit, distanceAtVirtualClick_mean)
+    predictionError_fit, predictionError_mean = fitting_function(blocks[:], predictionError[subject, :], predictionError_fit, predictionError_mean)
+    predictionErrorSD_fit, predictionErrorSD_mean = fitting_function(blocks[:], predictionErrorSD[subject, :], predictionErrorSD_fit, predictionErrorSD_mean)
 
     # correlations with blocks
     corr_coeff_uncorrected.append(pearsonr(blocks[:], SoA[subject, :])[0])
@@ -215,6 +234,8 @@ for subject in range(len(time)):
     corr_coeff_distanceAtStart_uncorrected.append(pearsonr(blocks[:], distanceAtStart[subject, :])[0])
     corr_coeff_distanceAtHumanClick_uncorrected.append(pearsonr(blocks[:], distanceAtHumanClick[subject, :])[0])
     corr_coeff_distanceAtVirtualClick_uncorrected.append(pearsonr(blocks[:], distanceAtVirtualClick[subject, :])[0])
+    corr_coeff_predictionError_uncorrected.append(pearsonr(blocks[:], predictionError[subject, :])[0])
+    corr_coeff_predictionErrorSD_uncorrected.append(pearsonr(blocks[:], predictionErrorSD[subject, :])[0])
 
     # global confidence
     global_confidence_mean.append(np.mean(global_confidence[subject, :]))
@@ -242,20 +263,30 @@ for subject in range(len(time)):
     residuals_block_time = blocks[:]-(z1[0]*time[subject, :] + z1[1])
     residuals_block_time_list.append(residuals_block_time)
 
-    a = pearsonr(residuals_block_time, residuals_time_SoA)
-    corr_coeff_corrected2.append(a[0])
-    a = pearsonr(residuals_block_time, residuals_time_global_SoA)
-    corr_coeff_global_corrected2.append(a[0])
+    # if a SoA is constant across blocks, its residuals are exactly 0 (not floating-point noise),
+    # its corrected slope is 0 and any correlation with it is undefined (NaN)
+    SoA_is_constant = np.ptp(SoA[subject, :]) == 0
+    global_SoA_is_constant = np.ptp(global_SoA[subject, :]) == 0
+    if SoA_is_constant:
+        residuals_time_SoA_list[-1] = np.zeros(len(blocks))
+        corr_coeff_corrected1[-1] = np.nan
+    if global_SoA_is_constant:
+        residuals_time_global_SoA_list[-1] = np.zeros(len(blocks))
+
+    if SoA_is_constant: corr_coeff_corrected2.append(np.nan)
+    else: corr_coeff_corrected2.append(pearsonr(residuals_block_time, residuals_time_SoA)[0])
+    if global_SoA_is_constant: corr_coeff_global_corrected2.append(np.nan)
+    else: corr_coeff_global_corrected2.append(pearsonr(residuals_block_time, residuals_time_global_SoA)[0])
 
     # 'fit residual SoA = f(residual block), same with global_SoA'
-    z1 = np.polyfit(residuals_block_time, residuals_time_SoA, 1)
-    SoA_fit_corrected.append(z1[0])
-    z1 = np.polyfit(residuals_block_time, residuals_time_global_SoA, 1)
-    global_SoA_fit_corrected.append(z1[0])
+    if SoA_is_constant: SoA_fit_corrected.append(0.0)
+    else: SoA_fit_corrected.append(np.polyfit(residuals_block_time, residuals_time_SoA, 1)[0])
+    if global_SoA_is_constant: global_SoA_fit_corrected.append(0.0)
+    else: global_SoA_fit_corrected.append(np.polyfit(residuals_block_time, residuals_time_global_SoA, 1)[0])
 
     # correlation between time and SoA
-    a = pearsonr(time[subject, :], SoA[subject, :])
-    corr_time_SoA.append(a[0])
+    if SoA_is_constant: corr_time_SoA.append(np.nan)
+    else: corr_time_SoA.append(pearsonr(time[subject, :], SoA[subject, :])[0])
    
     # ************* IPC *******************
     i.append(I[subject])
@@ -267,7 +298,8 @@ for subject in range(len(time)):
 # ****** Figure 1: Local SoA increases  ******
 
 fig1 = plt.figure()
-plot_the_violins(SoA, None, 'local SoA', 1, 1, 1, False)
+plot_the_violins(SoA, None, 'local SoA', 1, 1, 1, False, show_grand_mean=True)
+plt.savefig(op.join(_figureDirectory, 'local_SoA_across_blocks.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -279,7 +311,7 @@ SoA_array = np.concatenate(SoA, axis=0)
 global_SoA_array = np.concatenate(global_SoA, axis=0)
 time_array = np.concatenate(time, axis=0)
 
-d = {'block': blocks_array, 'local SoA': SoA_array, 'Time Between Clicks': time_array}
+d = {'block': blocks_array, 'local SoA': SoA_array, 'Time Between Clicks (ms)': time_array}
 df = pd.DataFrame(data=d)
 sns.set_theme(style="ticks")
 g = sns.pairplot(df, hue="block", corner=True)
@@ -297,8 +329,9 @@ g.axes[1, 0].text(x_margin, 1 - y_margin, 'B', transform=g.axes[1, 0].transAxes,
 g.axes[1, 1].text(x_margin, 1 - y_margin, 'C', transform=g.axes[1, 1].transAxes,
                   fontsize=12, va='top', ha='left', fontweight='bold')
 
-sns.regplot(x=df['local SoA'], y=df['Time Between Clicks'], color='grey', scatter=False, ax=g.axes[1][0])
+sns.regplot(x=df['local SoA'], y=df['Time Between Clicks (ms)'], color='grey', scatter=False, ax=g.axes[1][0])
 
+plt.savefig(op.join(_figureDirectory, 'local_SoA_and_time_between_clicks_across_blocks.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 corr_time_SoA = np.array(corr_time_SoA)
@@ -334,6 +367,7 @@ for subject in range(len(time)):
 sns.regplot(x=residuals_block_time_array, y=residuals_time_SoA_array, color='k', scatter=False)
 plt.xlabel('corrected Block')
 plt.ylabel('corrected local SoA')
+plt.savefig(op.join(_figureDirectory, 'corrected_local_SoA_vs_corrected_block.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -361,6 +395,7 @@ z = np.polyfit(PO, C, 1)
 p = np.poly1d(z)
 ax10.plot(PO, p(PO), 'g--', zdir='x', zs=-5)
 
+plt.savefig(op.join(_figureDirectory, 'IPC_dimensions_3D.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 # ****** Agency - LOC  ******
@@ -375,52 +410,38 @@ print('\ncorrelation with mean SOA:')
 correlation_agency_loc('I', i, SoA_mean)
 correlation_agency_loc('PO', po, SoA_mean)
 correlation_agency_loc('C', c, SoA_mean)
-correlation_agency_loc('I/total', np.divide(np.array(i), (np.array(i)+np.array(po)+np.array(c))), SoA_mean)
-correlation_agency_loc('PO/total', np.divide(np.array(i), (np.array(po)+np.array(po)+np.array(c))), SoA_mean)
-correlation_agency_loc('C/total', np.divide(np.array(i), (np.array(c)+np.array(po)+np.array(c))), SoA_mean)
 
 print('\ncorrelation with mean global SOA:')
 correlation_agency_loc('I', i, global_SoA_mean)
 correlation_agency_loc('PO', po, global_SoA_mean)
 correlation_agency_loc('C', c, global_SoA_mean)
-correlation_agency_loc('I/total', np.divide(np.array(i), (np.array(i)+np.array(po)+np.array(c))), global_SoA_mean)
-correlation_agency_loc('PO/total', np.divide(np.array(i), (np.array(po)+np.array(po)+np.array(c))), global_SoA_mean)
-correlation_agency_loc('C/total', np.divide(np.array(i), (np.array(c)+np.array(po)+np.array(c))), global_SoA_mean)
 
 print('\ncorrelation with mean SoA_fit_corrected:')
 correlation_agency_loc('I', i, SoA_fit_corrected)
 correlation_agency_loc('PO', po, SoA_fit_corrected)
 correlation_agency_loc('C', c, SoA_fit_corrected)
-correlation_agency_loc('I/total', np.divide(np.array(i), (np.array(i)+np.array(po)+np.array(c))), SoA_fit_corrected)
-correlation_agency_loc('PO/total', np.divide(np.array(i), (np.array(po)+np.array(po)+np.array(c))), SoA_fit_corrected)
-correlation_agency_loc('C/total', np.divide(np.array(i), (np.array(c)+np.array(po)+np.array(c))), SoA_fit_corrected)
 
 print('\ncorrelation with global_SoA_fit_corrected:')
 correlation_agency_loc('I', i, global_SoA_fit_corrected)
 correlation_agency_loc('PO', po, global_SoA_fit_corrected)
 correlation_agency_loc('C', c, global_SoA_fit_corrected)
-correlation_agency_loc('I/total', np.divide(np.array(i), (np.array(i)+np.array(po)+np.array(c))), global_SoA_fit_corrected)
-correlation_agency_loc('PO/total', np.divide(np.array(i), (np.array(po)+np.array(po)+np.array(c))), global_SoA_fit_corrected)
-correlation_agency_loc('C/total', np.divide(np.array(i), (np.array(c)+np.array(po)+np.array(c))), global_SoA_fit_corrected)
 
-fig, ax = plt.subplots(2, 2)
+fig, ax = plt.subplots(1, 3, figsize=(12, 4))
 
-sns.regplot(x=SoA_mean, y=np.divide(np.array(i), (np.array(i)+np.array(po)+np.array(c))), ax=ax[0,0])
-ax[0,0].set_xlabel('SoA mean')
-ax[0,0].set_ylabel('I/(I+PO+C)')
+sns.regplot(x=SoA_mean, y=po, ax=ax[0])
+ax[0].set_xlabel('mean local SoA')
+ax[0].set_ylabel('PO')
 
-sns.regplot(x=global_SoA_mean, y=po, ax=ax[0,1])
-ax[0,1].set_xlabel('global SoA mean')
-ax[0,1].set_ylabel('PO')
+sns.regplot(x=global_SoA_mean, y=po, ax=ax[1])
+ax[1].set_xlabel('mean global SoA')
+ax[1].set_ylabel('PO')
 
-sns.regplot(x=global_SoA_fit_corrected, y=po, ax=ax[1,0])
-ax[1,0].set_xlabel('global SoA mean')
-ax[1,0].set_ylabel('PO')
+sns.regplot(x=global_SoA_fit_corrected, y=po, ax=ax[2])
+ax[2].set_xlabel('corrected global SoA shift')
+ax[2].set_ylabel('PO')
 
-sns.regplot(x=global_SoA_fit_corrected, y=np.divide(np.array(po), (np.array(i)+np.array(po)+np.array(c))), ax=ax[1,1])
-ax[1,1].set_xlabel('global SoA mean')
-ax[1,1].set_ylabel('PO/(I+PO+C)')
-
+plt.tight_layout()
+plt.savefig(op.join(_figureDirectory, 'SoA_vs_IPC.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -450,6 +471,23 @@ for axnb, ax in enumerate(g.axes):
     if axnb>1:
         ax[axnb].axvline(0, linestyle='--')
 
+# Redraw the diagonal distributions of mean local and global SoA, clipped to their possible range
+# (local SoA is a proportion between 0 and 1, global SoA a rating between 1 and 5)
+for axnb, (column, clip_range) in enumerate([('mean local SoA', (0, 1)), ('mean global SoA', (1, 5))]):
+    diag_ax = g.diag_axes[axnb]
+    diag_ax.clear()
+    sns.kdeplot(x=df[column], ax=diag_ax, fill=True, clip=clip_range)
+    diag_ax.set_xlabel('')
+    diag_ax.set_ylabel('')
+    diag_ax.yaxis.set_visible(False)
+    diag_ax.set_ylim(bottom=0)
+    for spine in ['top', 'right', 'left']:
+        diag_ax.spines[spine].set_visible(False)
+
+# Add the mean value (across participants) to diagonal distribution of mean local and global SoA
+for axnb, column in enumerate(['mean local SoA', 'mean global SoA']):
+    g.axes[axnb][axnb].axvline(df[column].mean(), color='black', linestyle=':', linewidth=1.5)
+
 # Add titles to each panel
 panel_titles = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 nb = 0
@@ -462,6 +500,7 @@ for ii in np.arange(4):
             ax.text(x_margin, 1 - y_margin, panel_titles[nb], transform=ax.transAxes,
                     fontsize=12, va='top', ha='left', fontweight='bold')
             nb=nb+1
+plt.savefig(op.join(_figureDirectory, 'local_vs_global_SoA.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -502,11 +541,12 @@ df_all.to_csv('all_participants_results_calculation.csv')
 # ***** checking the visual searchPerformance *****
 
 fig100 = plt.figure(figsize=(9, 6))
-plot_the_violins(searchTime, None, 'Search Time', 2, 2, 1, True)
-plot_the_violins(peakSpeed, None, 'Peak Speed', 2, 2, 2, True)
-plot_the_violins(humanClickTime, None, 'Human Click Time', 2, 2, 3, True)
-plot_the_violins(virtualClickTime, None, 'Virtual Click Time', 2, 2, 4, True)
+plot_the_violins(searchTime, None, 'Search Time (ms)', 2, 2, 1, True)
+plot_the_violins(peakSpeed, None, 'Peak Speed (px/ms)', 2, 2, 2, True)
+plot_the_violins(humanClickTime, None, 'Human Click Time (ms)', 2, 2, 3, True)
+plot_the_violins(virtualClickTime, None, 'Virtual Click Time (ms)', 2, 2, 4, True)
 
+plt.savefig(op.join(_figureDirectory, 'performance_across_blocks.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -529,3 +569,8 @@ testing_against_0(distanceAtHumanClick_fit, 'distanceAtHumanClick fit')
 testing_against_0(corr_coeff_distanceAtHumanClick_uncorrected, 'distanceAtHumanClick corr corref')
 testing_against_0(distanceAtVirtualClick_fit, 'distanceAtVirtualClick fit')
 testing_against_0(corr_coeff_distanceAtVirtualClick_uncorrected, 'distanceAtVirtualClick corr corref')
+testing_against_0(predictionError_fit, 'predictionError fit')
+testing_against_0(corr_coeff_predictionError_uncorrected, 'predictionError corr corref')
+testing_against_0(predictionErrorSD_fit, 'predictionErrorSD fit')
+testing_against_0(corr_coeff_predictionErrorSD_uncorrected, 'predictionErrorSD corr corref')
+print('predictionErrorSD per block (mean across participants): ' + str(np.round(predictionErrorSD.mean(axis=0), 1)))
