@@ -206,9 +206,21 @@ melted_df_rest_of = melted_df[melted_df['groups']=='group 2']
 
 # Draw a nested violinplot and split the violins for easier comparison
 ax = sns.violinplot(data=melted_df, x="Block number", y="global SoA", hue="groups", hue_order=['group 1', 'group 2'],
-                    split=True, linewidth=1, cut=0)
+                    split=True, linewidth=1, cut=0, inner=None)
+ax.set_xlabel('')
 
-plt.plot([0, 1, 2, 3, 4, 5], [melted_df_warnings_negative[melted_df_warnings_negative['Block number']=='block1']['global SoA'].mean(), 
+# Draw a single box in the center of each violin (both groups pooled: median, quartiles and whiskers at 1.5 IQR)
+for i, block in enumerate(value_vars):
+    values = melted_df[melted_df['Block number']==block]['global SoA'].dropna().to_numpy()
+    q25, q50, q75 = np.percentile(values, [25, 50, 75])
+    iqr = q75 - q25
+    whisker_low = values[values >= q25 - 1.5*iqr].min()
+    whisker_high = values[values <= q75 + 1.5*iqr].max()
+    ax.plot([i, i], [whisker_low, whisker_high], color='#3f3f3f', linewidth=1)
+    ax.plot([i, i], [q25, q75], color='#3f3f3f', linewidth=3, solid_capstyle='butt')
+    ax.scatter(i, q50, color='white', edgecolor='#3f3f3f', s=4, linewidth=1, zorder=3)
+
+plt.plot([0, 1, 2, 3, 4, 5], [melted_df_warnings_negative[melted_df_warnings_negative['Block number']=='block1']['global SoA'].mean(),
                               melted_df_warnings_negative[melted_df_warnings_negative['Block number']=='block2']['global SoA'].mean(), 
                               melted_df_warnings_negative[melted_df_warnings_negative['Block number']=='block3']['global SoA'].mean(), 
                               melted_df_warnings_negative[melted_df_warnings_negative['Block number']=='block4']['global SoA'].mean(), 
@@ -232,7 +244,8 @@ fig.set_size_inches(8, 6)  # Adjust the size as per your requirements
 # Move the legend outside the figure
 ax.legend(bbox_to_anchor=(1, 1), loc='upper center')
 
-# Show the plot
+# Save and show the plot
+plt.savefig('figures/subgroups_survey_comments.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 

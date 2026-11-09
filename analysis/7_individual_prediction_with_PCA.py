@@ -305,8 +305,8 @@ cbar_ax = fig.add_axes([0.85, 0.125, 0.02, 0.32])  # Adjusted position
 # cbar = fig.colorbar(ax2.get_children()[0], cax=cbar_ax)
 cbar = fig.colorbar(ax2.collections[0], cax=cbar_ax)
 
-# Show the plot
-# plt.savefig('PCA_figure.png')
+# Save and show the plot
+plt.savefig('figures/PCA_figure.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 
