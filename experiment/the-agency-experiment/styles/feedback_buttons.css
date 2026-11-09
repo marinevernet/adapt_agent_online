@@ -1,0 +1,208 @@
+#feedback {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1.042vw /*20px*/;
+	animation: panUp 0.3s cubic-bezier(0, 0.6, 0, 0.98) forwards;
+}
+@keyframes panUp {
+	0% {
+		top: -50%;
+	}
+	100% {
+		top: 50%;
+	}
+}
+
+#feedbackSpotlight {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%) rotate(60deg) skewX(30deg);
+	width: 70vw; height: calc(0.866*70vw);
+	overflow: hidden;
+}
+#feedbackSpotlight:before {
+	display: block;
+	content: '';
+	background: linear-gradient(rgba(254, 255, 227, 1), rgba(0, 0, 0, 0));
+	transform: skewX(-30deg) rotate(-60deg) translate(-10%);
+	width: inherit; height: 50%;
+}
+#feedbackSpotlightBorder {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 35.5vw; height: 0.625vw /*12px*/;
+	border-radius: 0.521vw /*10px*/;
+	border-top: 0.312vw /*6px*/ solid black;
+}
+
+#feedbackQuestion {
+	width: 40%;
+}
+
+#feedbackButtons {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.feedbackButtonWrapper {
+	width: 30%;
+	margin: 1.562vw 4.167vw /*30px 80px*/;
+}
+
+.feedbackButton {
+	position: relative;
+	border-radius: 1.042vw /*20px*/;
+	box-shadow: inset 0vw 0vw 0vw 0.208vw black /*0px 0px 0px 4px black*/;
+	width: 100%;
+	margin: auto;
+	transition: 0.1s;
+}
+.feedbackButton:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+.feedbackButton:hover {
+	cursor: pointer;
+	box-shadow: inset 0vw 0vw 0vw 0.417vw black /*0px 0px 0px 8px black*/;
+}
+.feedbackButton.feedbackSelected, .feedbackButton:active {
+	border-top-left-radius: 25%;
+	border-top-right-radius: 25%;
+	box-shadow: inset 0vw 0vw 0vw 0.417vw #EC1C3A /*0px 0px 0px 4px #EC1C3A*/;
+	/*filter: drop-shadow(0 0 0.5rem #EC1C3A);*/
+	transition: 0.2s ease-out;
+}
+
+#humanClickFeedback {
+	background-color: #3888FF;
+	transform: rotate(2deg) scale(0.9);
+	background-size: 200% 200%;
+	background-position: 50% 50%;
+	animation: wave1 4s ease-in-out infinite;
+}
+#humanClickFeedback.feedbackDisappear {
+	transform: rotate(-2deg) scale(0);
+	filter: brightness(0%);
+	transition: 0.18s ease-out;
+}
+@keyframes wave1 {
+	0% {
+		margin-top: 0vw;
+	}
+	50% {
+		margin-top: 0.833vw /*16px*/;
+	}
+	100% {
+		margin-top: 0vw;
+	}
+}
+#humanClickFeedback:hover, #humanClickFeedback:active, #humanClickFeedback.feedbackSelected {
+	background-image: 
+   	radial-gradient(circle,
+   		var(--color1H) 0px,
+   		var(--color1H) calc(var(--offsetH) + 0px),
+   		var(--color2H) calc(var(--offsetH) + 0px),
+   		var(--color2H) calc(var(--offsetH) + 2.083vw),
+   		var(--color1H) calc(var(--offsetH) + 2.083vw),
+   		var(--color1H) calc(var(--offsetH) + 4.167vw),
+   		var(--color2H) calc(var(--offsetH) + 4.167vw),
+   		var(--color2H) calc(var(--offsetH) + 6.25vw),
+   		var(--color1H) calc(var(--offsetH) + 6.25vw),
+   		var(--color1H) calc(var(--offsetH) + 8.333vw),
+   		var(--color2H) calc(var(--offsetH) + 8.333vw),
+   		var(--color2H) calc(var(--offsetH) + 10.417vw),
+   		var(--color1H) calc(var(--offsetH) + 10.417vw),
+   		var(--color1H) calc(var(--offsetH) + 12.5vw),
+   		var(--color2H) calc(var(--offsetH) + 12.5vw),
+   		var(--color2H) calc(var(--offsetH) + 14.583vw),
+   		var(--color1H) calc(var(--offsetH) + 14.583vw),
+   		var(--color1H) calc(var(--offsetH) + 16.66vw),
+   		var(--color2H) calc(var(--offsetH) + 16.66vw));
+	animation:  none;
+	transform: rotate(0deg) scale(1.05);
+	transition: 0.16s cubic-bezier(0, 0.5, 0.35, 1.5);
+}
+#humanClickFeedback:active {
+	transform: rotate(0deg) scale(1.1);
+	transition: transform 0s;
+}
+
+#machineClickFeedback {
+	background-color: #FF9912;
+	transform: rotate(-2deg) scale(0.9);
+	background-size: 200% 200%;
+	background-position: 50% 50%;
+	animation: wave2 4s ease-in-out infinite;
+}
+#machineClickFeedback.feedbackDisappear {
+	transform: rotate(-2deg) scale(0);
+	filter: brightness(0%);
+	transition: 0.18s ease-out;
+}
+@keyframes wave2 {
+	0% {
+		margin-top: 0.417vw /*8px*/;
+	}
+	25% {
+		margin-top: 0.833vw /*16px*/;
+	}
+	50% {
+		margin-top: 0.417vw /*8px*/;
+	}
+	75% {
+		margin-top: 0vw;
+	}
+	100% {
+		margin-top: 0.417vw /*8px*/;
+	}
+}
+#machineClickFeedback:hover, #machineClickFeedback:active, #machineClickFeedback.feedbackSelected {
+	background-image: 
+	radial-gradient(circle,
+		var(--color1M) 0vw,
+		var(--color1M) calc(var(--offsetM) + 0vw),
+		var(--color2M) calc(var(--offsetM) + 0vw),
+		var(--color2M) calc(var(--offsetM) + 2.083vw),
+		var(--color1M) calc(var(--offsetM) + 2.083vw),
+		var(--color1M) calc(var(--offsetM) + 4.167vw),
+		var(--color2M) calc(var(--offsetM) + 4.167vw),
+		var(--color2M) calc(var(--offsetM) + 6.25vw),
+		var(--color1M) calc(var(--offsetM) + 6.25vw),
+		var(--color1M) calc(var(--offsetM) + 8.333vw),
+		var(--color2M) calc(var(--offsetM) + 8.333vw),
+		var(--color2M) calc(var(--offsetM) + 10.417vw),
+		var(--color1M) calc(var(--offsetM) + 10.417vw),
+		var(--color1M) calc(var(--offsetM) + 12.5vw),
+		var(--color2M) calc(var(--offsetM) + 12.5vw),
+		var(--color2M) calc(var(--offsetM) + 14.583vw),
+		var(--color1M) calc(var(--offsetM) + 14.583vw),
+		var(--color1M) calc(var(--offsetM) + 16.66vw),
+		var(--color2M) calc(var(--offsetM) + 16.66vw));
+   	animation:  none;
+	transform: rotate(0deg) scale(1.05);
+	transition: 0.18s cubic-bezier(0, 0.5, 0.35, 2);
+}
+#machineClickFeedback:active {
+	transform: rotate(0deg) scale(1.1);
+	transition: transform 0s;
+}
+
+.feedbackButtonIcon {
+	position: absolute;
+    width: 100%;
+    height: 100%;
+	top: 0;
+	left: 0;
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="256pt" height="256pt" viewBox="0 0 265 265" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="lg">
+    <stop
+       offset="0"
+       style="stop-color:#3888FF;stop-opacity:1" />
+    <stop
+       offset="1"
+       style="stop-color:#2A66BF;stop-opacity:1" />
+  </linearGradient>
+</defs>
+<g id="#ffffffff" transform="translate(2.25, 2.25)">
+<path fill="#ffffff" opacity="1.00" d=" M 39.63 0.00 L 216.36 0.00 C 229.62 13.16 242.83 26.38 256.00 39.64 L 256.00 216.36 C 242.84 229.62 229.61 242.83 216.36 256.00 L 39.64 256.00 C 26.38 242.84 13.17 229.61 0.00 216.36 L 0.00 39.65 C 13.16 26.38 26.39 13.17 39.63 0.00 M 116.47 25.62 C 85.33 28.88 56.34 47.41 40.13 74.17 C 27.88 94.01 22.79 118.08 25.82 141.19 C 28.34 161.25 37.00 180.46 50.30 195.67 C 65.82 213.57 87.69 225.84 111.08 229.64 C 133.12 233.32 156.34 229.65 176.07 219.14 C 198.85 207.23 216.77 186.43 225.23 162.16 C 233.14 139.74 232.94 114.59 224.68 92.31 C 216.09 68.92 198.72 48.92 176.73 37.21 C 158.45 27.32 137.11 23.28 116.47 25.62 Z" style="opacity:1;fill:url(#lg);fill-opacity:1;stroke:#000000;stroke-width:4.5;stroke-miterlimit:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"/>
+<path fill="#ffffff" opacity="1.00" d=" M 74.02 74.02 C 110.01 73.99 146.00 73.99 181.98 74.02 C 182.01 110.01 182.01 146.00 181.98 181.98 C 145.99 182.01 110.00 182.01 74.02 181.98 C 73.99 145.99 73.99 110.00 74.02 74.02 M 121.42 95.63 C 113.48 97.25 106.15 101.84 101.39 108.42 C 92.57 120.05 92.95 137.48 102.26 148.72 C 111.80 161.03 130.45 164.69 143.95 156.92 C 158.13 149.52 164.86 131.02 158.85 116.21 C 153.57 101.41 136.73 92.22 121.42 95.63 Z" style="opacity:1;fill:url(#lg);fill-opacity:1;stroke:#000000;stroke-width:4.5;stroke-miterlimit:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"/>
+<path fill="#ffffff" opacity="1.00" d=" M 116.02 116.02 C 124.00 115.99 131.99 115.99 139.98 116.02 C 140.01 124.01 140.01 131.99 139.98 139.98 C 131.99 140.01 124.00 140.01 116.02 139.98 C 115.99 131.99 115.99 124.00 116.02 116.02 Z" style="opacity:1;fill:url(#lg);fill-opacity:1;stroke:#000000;stroke-width:4.5;stroke-miterlimit:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"/>
+</g>
+</svg>

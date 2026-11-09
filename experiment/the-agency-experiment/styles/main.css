@@ -1,0 +1,209 @@
+body {
+	font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+	min-height: 100%;
+	position: relative;
+	overflow: hidden;
+	cursor: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+body, html {
+	height: 100%;
+	width: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+h1 {
+	text-align: center;
+	font-size: 1.979vw /*38px*/;
+}
+p {
+	text-align: center;
+}
+img {
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+textarea {
+    resize: none;
+}
+
+#background {
+	position: fixed;
+    display: none;
+	right: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100%;
+}
+
+#screenWrapper {
+	width: 100%;
+	padding-top: 50.9896%;
+	position: relative;
+	overflow: hidden;
+}
+
+.screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	text-align: center;
+}
+
+#transitionOverlay0, #transitionOverlay2 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+}
+#transitionOverlay2 {
+	filter: brightness(80%);
+}
+
+#pauseScreen, #wrongBrowserScreen, #hardwareAccelerationScreen {
+	z-index: 99;
+	background: white;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+}
+#pauseScreen > div, #wrongBrowserScreen > div, #hardwareAccelerationScreen > div {
+	margin: auto;
+	font-size: 1.458vw /*28px*/;
+	width: 30%;
+}
+#wrongBrowserScreen > div, #hardwareAccelerationScreen > div {
+    width: 100%;
+}
+#chooseLanguage {
+	background: white;
+	flex-direction: column;
+	align-items: center;
+    justify-content: space-around;
+}
+#chooseLanguageWrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.15s ease-out;
+}
+#chooseLanguageQuestion > span {
+    font-size: 1.858vw /*28px*/;
+    font-weight: bold;
+}
+#flagWrapper {
+	display: flex;
+	flex-direction: row;
+    justify-content: center;
+}
+.languageFlag {
+	width: 30%;
+	margin: 2em;
+    display: flex;
+    flex-direction: column;
+}
+.languageFlag > img {
+	width: 100%;
+	opacity: 0.9;
+    transform: scale(1);
+    filter: grayscale(40%);
+    transition: 0.1s ease-out;
+}
+.languageFlag > img:hover {
+	opacity: 1;
+    transform: scale(1.06);
+    filter: drop-shadow(0.35vw 0.35vw 4px rgba(0, 0, 0, 0.4));
+    transition: 0.15s cubic-bezier(0, 0.5, 0.35, 2);
+}
+.languageFlag > div {
+    font-size: 1.458vw /*28px*/;
+    margin-top: 1vw;
+    font-weight: bold;
+}
+
+#cursorFollower {
+    display: none;
+	position: absolute;
+	width: 0.625vw /*12px*/;
+	height: 0.625vw /*12px*/;
+	transform: translate(-50%, -50%);
+	background-color: #D50000;
+	border: 2px solid white;
+	border-radius: 50%;
+    z-index: 60;
+    pointer-events: none;
+}
+#growingCircle {
+	display: none;
+	position: absolute;
+    width: 5.208vw /*100px*/;
+	height: 5.208vw /*100px*/;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: rgba(0, 0, 0, 0);
+	border: 10px solid rgba(0, 0, 0, 1);
+    border-radius: 50%;
+	z-index: 50;
+	pointer-events: none;
+}
+.growingCircle {
+	animation: growingCircle 0.4s forwards cubic-bezier(0, 0.25, 0.5, 1);
+}
+@keyframes growingCircle {
+	0% {
+		width: 0;
+		height: 0;
+		border-width: 2.083vw /*40px*/;
+		opacity: 1;
+	}
+	80% {
+		opacity: 1;
+	}
+	100% {
+		width: 20vw;
+		height: 20vw;
+		border-width: 0px;
+		opacity: 0;
+	}
+}
+
+.customButton {
+	display: inline-block;
+	background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), #FF9912;
+	color: black;
+	font-size: 1.25vw /*24px*/;
+	font-weight: bold;
+	border-color: black;
+	border-width: 0.260vw /*4px*/;
+	border-style: solid;
+	padding: 0.521vw 1.042vw /*10px 20px*/;
+	border-radius: 2em;
+	transition: 0.1s ease-out;
+	user-select: none;
+}
+.customButton:hover:not(.active):not(.disabled) {
+	background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), #3888FF;
+	padding: 0.521vw 3.125vw /*10px 60px*/;
+	box-shadow: 0vw 0.364vw 0vw black /*0px 7px 0px black*/;
+	transition: 0.18s ease-out;
+	transition: padding 0.18s cubic-bezier(0, 0.5, 0.35, 2);
+	cursor: pointer;
+}
+
+#debugScreen {
+	top: 100vw;
+}

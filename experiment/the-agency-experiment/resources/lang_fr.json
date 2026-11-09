@@ -1,0 +1,643 @@
+{
+	"nextButtons": {
+		"0": "Démarrer",
+		"1": "Suivant",
+		"2": "Jouer",
+		"3": "Continuer",
+		"4": "Commencer",
+		"5": "Terminer",
+		"6": "Poursuivre"
+	},
+	"popups": {
+		"1": "Veuillez cliquer <span class='warningHighlight'>uniquement</span> sur l’intrus",
+		"2": "Veuillez cliquer <span class='warningHighlight'>précisément</span> sur l’intrus",
+		"3": "Veuillez vous déplacer vers l’intrus <span class='warningHighlight'>d’un seul mouvement fluide</span>",
+		"4": "Veuillez ne pas vous déplacer vers l’intrus <span class='warningHighlight'>avant d’avoir appuyé sur la touche espace</span>",
+		"5": "Veuillez <span class='warningHighlight'>ne pas vous arrêter</span> dans votre mouvement",
+		"6": "Veuillez cliquer sur l’intrus <span class='warningHighlight'>dès que vous l’avez trouvé</span>",
+		"7": "Veuillez <span class='warningHighlight'>ne pas vous éloigner</span> de l’intrus",
+		"8": "Veuillez <span class='warningHighlight'>ne pas vous rapprocher</span> de l’intrus lorsque la grille est <span class='warningHighlight'>verrouillée</span>",
+		"9": "Veuillez <span class='warningHighlight'>cliquer sur l'intrus</span> une fois la grille déverrouillée",
+		"10": "Veuillez <span class='warningHighlight'>ne pas laisser intentionnellement l'ordinateur cliquer à votre place</span>",
+		"11": "Êtes-vous toujours là ?",
+		"12": "Veuillez ne pas appuyer sur la touche espace <span class='warningHighlight'>alors que la souris est en dehors de la grille</span>"
+	},
+	"breakScreen": "Vous venez de finir le niveau <b><span id='levelIndicator'>$</span></b><br/>Vous méritez une petite pause.<br/><br/>Pouvez-vous répondre aux questions suivantes <br/>pendant ce temps ?<br/><br/>",
+	"miniBreakScreen": [
+		"<b>$% <span style='color: #0EAF00'>plus rapide</span></b> qu'avant !",
+		"<b>$% <span style='color: #FF0000'>plus lent</span></b> qu'avant !",
+		"<b>$% <span style='color: #0EAF00'>de moins</span></b> qu'avant !",
+		"<b>$% <span style='color: #FF0000'>de plus</span></b> qu'avant !",
+		"Comme votre score précédent !",
+		"C'est <b><span style='color: #FF0000'>moins bien</span></b> qu'avant !",
+		"C'est <b><span style='color: #0EAF00'>mieux</span></b> qu'avant !",
+		"<b><span style='color: #3888FF'>$</span></b> étant votre meilleur score"
+	],
+	"sidePanel": {
+		"levelCounter": {
+			"label": "NIVEAU",
+			"tutorial": "TUTO",
+			"infinity": "INFINI"
+		},
+		"instructions": {
+			"1": "<span style='color: #EC1C3A'>Cherchez</span>\nl'intrus !",
+			"2": "<span style='color: #EC1C3A'>Cliquez</span> sur\nl'intrus !"
+		}
+	},
+	"tutorialReminder": "Pour atteindre le niveau 1, vous devez réussir 5 essais d'affilée",
+	"html": {
+		"trialCounter": "ESSAI",
+		"instructionsReminder": {
+			"0": "Rappel des instructions",
+			"1": "Cherchez l'intrus",
+			"2": "Appuyez sur la barre espace",
+			"3": "Déplacez votre souris d'un seul mouvement fluide",
+			"4": "Cliquez sur l'intrus"
+		},
+		"retry": "Réessayer",
+		"resume": "Reprendre",
+		"warningOverlay": "Veuillez <span class='warningHighlight'>ne pas bouger la souris</span> lorsque la grille est verrouillée",
+		"pauseScreen": "Ce jeu doit être joué en mode plein écran.<br/><br/>Si vous souhaitez prendre une pause, vous pouvez le faire maintenant.<br/><br/>Lorsque vous reprendrez, vous serez à nouveau mis(e) en mode plein écran.<br/><br/>",
+		"wrongBrowser": "Malheureusement, vous ne pouvez pas jouer à ce jeu sur ce navigateur. <br/><br/>Vous devez être soit sur <span class='pinkHighlight'>Google Chrome</span>, <span class='pinkHighlight'>Microsoft Edge</span> ou <span class='pinkHighlight'>Opera</span>.",
+		"hardwareAcceleration": "Malheureusement, vous ne pouvez pas jouer à ce jeu. <br/><br/>Il semblerait que votre ordinateur n'ait pas une <span class='pinkHighlight'>carte graphique</span> suffisamment puissante,<br/> ou que votre navgateur n'ait pas <span class='pinkHighlight'>l'accélération matérielle</span> activée. <br/><br/>Pour plus d'informatons sur comment activer ou désactiver l'accélératon matérielle sur Chrome, consultez <a href='https://lecrabeinfo.net/google-chrome-desactiver-lacceleration-materielle-rendu-gpu.html' target='_blank'>ce lien</a>",
+		"infoScreens": "<div id='iS_W_1' class='infoScreenContentTemplate'> <h1>Bienvenue</h1> <div> <div> <b>Avant de commencer, assurez-vous que:</b> <ul> <li>Vous êtes bien installé(e)</li> <li>Vous avez une souris</li> <li>Vous êtes prêt(e) à jouer en plein écran</li> <li>Vous avez 40 minutes à disposition</li> </ul> </div> </div> </div> <div id='iS_I0_1' class='infoScreenContentTemplate'> <h1>Information</h1> <div class='consentInfo'> <b>1. Chercheuse responsable du projet</b> <br /> Marine VERNET, Chargée de recherche CNRS <br /> Centre de Recherche en Neurosciences de Lyon CRNL (INSERM U1028) <br /> Équipe IMPACT - 16 avenue du Doyen Lépine - 69676 Bron Cedex <br /><br /> <b>2. But du projet de recherche</b> <br /> Ce projet de recherche vise à mieux comprendre comment fonctionne le cerveau d'adultes en bonne santé lors d'un jeu où il faut battre ses propres scores et ceux de l'ordinateur. <br /><br /> <b>3. Qui peut participer </b> <br /> Vous pouvez participer à cette étude si vous avez plus de 18ans et êtes en bonne santé, avec une vision normale ou corrigée à la normale, sans antécédent de maladie neurologique, psychiatrique, ou de trouble moteur connu. <br /><br /> <b>4. Ce que l'on attend de vous </b> <br /> Votre participation dans cette étude consiste à jouer à un jeu en ligne. Vous devrez trouver un intrus parmi des formes similaires et aller cliquer dessus le plus vite possible, afin de battre vos propres scores et ceux de l'ordinateur. Vous serez également amené.e à répondre à de courtes questions concernant l'expérience, ainsi qu'à un questionnaire à la fin de l'expérience. La durée totale de l'étude est estimée entre 45 et 60 minutes. <br /><br /> <b>5. Vos droits de vous retirer de la recherche en tout temps </b> <br /> Votre contribution à cette recherche est volontaire et vous devez donner votre accord avant d'y participer. Vous êtes libre de cesser votre participation à tout moment. Votre décision de participer, de refuser de participer, ou de cesser de participer peut intervenir à tout moment sans justification et n'aura aucun effet sur vous. Si vous ne souhaitez pas participer, ou si vous souhaitez cesser de participer, vous pouvez à tout moment tout simplement fermer la fenêtre du navigateur. Si vous quittez le jeu après l'avoir commencé, vos données précédemment collectées seront enregistrées. <br /><br /> <b>6. Vos droits à la confidentialité et au respect de la vie privée</b> <br /> Toute donnée collectée est entièrement anonyme et à aucun moment il n'est possible de vous identifier. Par ailleurs, aucun renseignement ne vous sera demandé qui puisse révéler votre identité. <br /><br /> <b>7. Conservation des données</b> <br /> Les données de cette étude seront conservées 5 ans sur le serveur du Centre de Recherche en Neurosciences de Lyon, puis archivées sur ce même serveur pour une durée de 8 ans avant d'être détruites. Elles pourront également faire l'objet d'un dépôt sur des plateformes en libre accès. <br /><br /> <b>8. Aspects éthiques</b> <br /> Ce projet a reçu un avis favorable du Comité d'Evaluation Ethique de l'Inserm (IRB00003888) le 7 juin 2022. <br /><br /> <b>9. Diffusion </b> <br /> Les résultats de l'étude seront diffusés dans des congrès scientifiques, des journaux scientifiques et pourront faire l'objet d'enseignement et figurer dans des supports pédagogiques. <br /><br /> <b>10. Vos droits de poser des questions en tout temps</b> <br /> Vous pouvez contacter à tout moment le responsable scientifique de cette recherche afin de demander de plus amples informations sur l'étude (marine . vernet (at) inserm . fr). </div> </div> <div id='iS_I0_2' class='infoScreenContentTemplate'> <h1>Information</h1> <div> <div>Avant de débuter, nous avons besoin d'avoir quelques informations. <br /><br /></div> <div id='initialSurvey'></div> </div> </div> <div id='iS_I0_3' class='infoScreenContentTemplate'> <h1>Information</h1> <div> <div id='initialSurvey2'></div> </div> </div> <div id='iS_I0_4' class='infoScreenContentTemplate'> <h1>Information</h1> <div>Merci. Nous allons maintenant commencer.</div> </div> <div id='iS_I0_5' class='infoScreenContentTemplate'> <h1>Information</h1> <div>Nous sommes désolés, vous ne pouvez pas prendre part à ce jeu.</div> </div> <div id='iS_I1_1' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div><br />Le but du jeu auquel vous allez jouer est de <b><span style='color: #EC1C3A;'>trouver l'intrus</span></b> au sein d'une grille de formes géométriques.<br /><br /><img src='resources/Info Screen Graphics/GameScreenshot1_fr.png' /></div> </div> <div id='iS_I1_2' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div><br />L'intrus se caractérise non seulement par <b><span style='color: #EC1C3A;'>une forme différente</span></b>, mais aussi <b><span style='color: #EC1C3A;'>une couleur unique</span></b>.<br /><br /><img src='resources/Info Screen Graphics/GameScreenshot2_fr.png' /></div> </div> <div id='iS_I1_3' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div> <br />Dans un premier temps, vous devrez <b><span style='color: #EC1C3A;'>chercher l'intrus</span></b> <i>sans bouger votre souris</i>.<br /><br /> <video autoplay loop muted playsinline src='resources/Info Screen Graphics/TutorialVideo1.mp4'></video> </div> </div> <div id='iS_I1_4' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div> <br />Une fois que vous l'aurez trouvé, vous devrez <b><span style='color: #EC1C3A;'>appuyer sur la barre espace</span></b> afin de déverrouiller la grille.<br /><br /> <video autoplay loop muted playsinline src='resources/Info Screen Graphics/TutorialVideo2.mp4'></video> </div> </div> <div id='iS_I1_5' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div> Une fois la grille déverrouillée, vous pourrez <b><span style='color: #EC1C3A;'>déplacer votre souris vers l'intrus</span></b> <i>d'un seul mouvement fluide</i>,<br />puis <b><span style='color: #EC1C3A;'>cliquer sur l'intrus</span></b>.<br /><br /> <video autoplay loop muted playsinline src='resources/Info Screen Graphics/TutorialVideo3.mp4'></video> </div> </div> <div id='iS_I1_6' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div> <div>Pour récapituler, il suffit de : <br /><br /></div> <div class='instructionsReminderContent'> <video class='instructionsReminderGif' autoplay loop muted playsinline src='resources/Animations/InstructionsMemo_fr.mp4'></video> <div class='instructionsReminderList'> <ol> <li>Chercher l'intrus</li> <li>Appuyer sur la barre espace</li> <li>Déplacer votre souris d'un seul mouvement fluide</li> <li>Cliquer sur l'intrus</li> </ol> </div> </div> </div> </div> <div id='iS_I1_7' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div>L'essai est réussi uniquement si vous avez bien suivi ces instructions. Dans le cas contraire, une fenêtre interrompra le jeu et vous corrigera.<br /><br /><img src='resources/Info Screen Graphics/PopupScreenshot_fr.png' /></div> </div> <div id='iS_I1_8' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div>Vous allez maintenant débuter le jeu.<br /><br /><b><span style='color: #2A66BF'>Pour passer au niveau suivant,<br />il faudra réussir 5 essais de suite.</span></b><br /><br />À vous de jouer !</div> </div> <div id='iS_I2_1' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div>Vous avez compris les bases du jeu.<br /><br />Vous pouvez maintenant jouer aux niveaux supérieurs.</div> </div> <div id='iS_I2_2' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div>La barre de progression vous indiquera combien d'essais il reste avant d'atteindre le niveau supérieur.<br /><br /><img id='progressBarImage' src='resources/Info Screen Graphics/ProgressBarScreenshot.png' /><br />Bonne chance !</div> </div> <div id='iS_I3_1' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div>Vous venez de finir le niveau <b><span id='levelIndicator'>1</span></b>.<br /><br /><span style='letter-spacing: 4px;'>...</span></div> </div> <div id='iS_I3_2' class='infoScreenContentTemplate'> <h1>Remarque?</h1> <div>Vous avez peut-être remarqué qu'il s'est passé quelque chose d'étrange lors des derniers essais.<br /><br />Pouvez-vous nous en dire plus ?<br /><br /><textarea rows=5 placeholder='Écrivez votre commentaire ici...' id='postTrainingFeedback'></textarea></div> </div> <div id='iS_I3_3' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div>En réalité, l'ordinateur a déclenché un <b><span style='color: #EC1C3A;'>clic virtuel</span></b> sur l'intrus avant que vous n'ayez eu le temps de cliquer dessus.<br /><br /><img id='machineIconImage' src='resources/Info Screen Graphics/MachineIcon.png' /></div> </div> <div id='iS_I3_4' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div>Parfois il sera plus rapide et cliquera avant vous,<br />parfois non.</div> </div> <div id='iS_I3_5' class='infoScreenContentTemplate'> <div>Tout en continuant à suivre les mêmes instructions que précédemment, vous devez maintenant répondre à la fin de chaque essai si c'est bien <b><span style='color: #EC1C3A;'>vous</span></b> qui venez de cliquer sur l'intrus, ou si c'est <b><span style='color: #EC1C3A;'>l'ordinateur</span></b> qui a cliqué juste avant vous.<br /><br /><img src='resources/Info Screen Graphics/FeedbackScreenshot_fr.png' /></div> </div> <div id='iS_I3_6' class='infoScreenContentTemplate'> <h1>Tutoriel</h1> <div>Parfois, ce n'est pas évident de répondre.<br />Essayez d'être juste, mais n'y passez pas trop de temps <br />non plus.<br /><br />Bonne chance ! </div> </div> <div id='iS_MB_1' class='infoScreenContentTemplate'> <h1>Bien joué!</h1> <div> <div id='miniBreakStats'> <div id='searchTimeLabel' class='miniBreakStatLabel'>Le temps que vous avez mis en moyenne pour trouver l’intrus</div> <div id='searchTime' class='miniBreakStatContainer'> <div id='searchTimeStat' class='miniBreakStat'></div> <div id='searchTimeStatChange' class='miniBreakStatChangeLabel'></div> <div id='searchTimeStatHighscore' class='miniBreakStatHighscoreLabel'></div> </div> <div id='warningCountLabel' class='miniBreakStatLabel'>Le nombre d’avertissements que vous avez reçus</div> <div id='warningCount' class='miniBreakStatContainer'> <div id='warningCountStat' class='miniBreakStat'></div> <div id='warningCountStatChange' class='miniBreakStatChangeLabel'></div> <div id='warningCountStatHighscore' class='miniBreakStatHighscoreLabel'></div> </div> </div> <div><br /><b>Pouvez-vous faire mieux ?</b></div> <div id='falsePositivesWarning'> <br /> <div id='falsePositivesWarningPanel'><b>Remarque :</b> Il semblerait que vous ayez laissé intentionnellement l'ordinateur cliquer sur l'intrus à votre place un certain nombre de fois. Nous vous rappelons que votre objectif est de cliquer sur l'intrus.</div> </div> </div> </div> <div id='iS_B_1' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div> <div>(!) The content of this info panel is stored in the global variable breakHTML</div> <div id='breakFeedback'></div> </div> </div> <div id='iS_B_2' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div>Merci.<br /><br />Vous allez maintenant passer<br />au niveau supérieur.</div> </div> <div id='iS_I4_1' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div> <div>Félicitations !<br /><br />Vous avez fini les <b><span style='color: #EC1C3A;'>7</span></b> niveaux du jeu.<br /><br />Pouvez-vous répondre aux questions suivantes ?<br /><br /></div> </div> </div> <div id='iS_I4_2' class='infoScreenContentTemplate'> <h1>Bravo!</h1> <div> Avez-vous, au cours de l'expérience, tenté de \"feinter\" l'ordinateur d'une quelconque manière, ou changé votre comportement intentionnellement ?<br /><br /> <textarea rows=5 placeholder='Écrivez votre commentaire ici...' id='freeComments1'></textarea><br /><br /> Avez-vous d'autres commentaires à ajouter concernant le déroulement de cette expérience ?<br /><br /> <textarea rows=5 placeholder='Écrivez votre commentaire ici...' id='freeComments2'></textarea> </div> </div> <div id='iS_I4_3' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div>Merci. Avant de finir, nous vous demandons de répondre à un dernier questionnaire.<br /><br />Il prendra quelques minutes à compléter, et les réponses seront anonymes.</div> </div> <div id='iS_I4_4' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div>Il vous sera présenté un certain nombre d'affirmations.<br /><br />Réfléchissez bien à chaque affirmation et déterminez dans quelle mesure vous êtes d’accord ou non avec elle.<br /><br />Jugez les affirmations en vous référant à votre sentiment général et/ou à vos convictions.</div> </div> <div id='iS_I4_5' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div>Nous comprenons qu'il sera parfois difficile de choisir une seule réponse, car la plupart des affirmations dépendent du contexte.<br /><br />Néanmoins, veuillez choisir la réponse qui correspond le mieux à vos sentiments et à vos convictions.</div> </div> <div id='iS_I4_6' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div> <div id='finalFeedback0' class='finalFeedback'></div> <div class='finalFeedbackPageNumber'>1/6</div> </div> </div> <div id='iS_I4_7' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div> <div id='finalFeedback1' class='finalFeedback'></div> <div class='finalFeedbackPageNumber'>2/6</div> </div> </div> <div id='iS_I4_8' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div> <div id='finalFeedback2' class='finalFeedback'></div> <div class='finalFeedbackPageNumber'>3/6</div> </div> </div> <div id='iS_I4_9' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div> <div id='finalFeedback3' class='finalFeedback'></div> <div class='finalFeedbackPageNumber'>4/6</div> </div> </div> <div id='iS_I4_10' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div> <div id='finalFeedback4' class='finalFeedback'></div> <div class='finalFeedbackPageNumber'>5/6</div> </div> </div> <div id='iS_I4_11' class='infoScreenContentTemplate'> <h1>Questionnaire</h1> <div> <div id='finalFeedback5' class='finalFeedback'></div> <div class='finalFeedbackPageNumber'>6/6</div> </div> </div> <div id='iS_I4_12' class='infoScreenContentTemplate'> <h1>Merci</h1> <div>Merci pour votre participation.<br/><br/>Vous pouvez maintenant cliquer sur le bouton 'Terminer' pour valider votre participation sur Prolific.</div> </div>"	
+	},
+	"surveys": {
+		"initial": {
+			"locale": "fr",
+			"pages": [
+				{
+					"name": "page1",
+					"elements": [
+						{
+							"type": "text",
+							"name": "Age",
+							"title": "Quel âge avez-vous ?",
+							"inputType": "number",
+							"min": "0"
+						},
+						{
+							"type": "radiogroup",
+							"name": "Sexe",
+							"title": "Quel est votre sexe ?",
+							"choices": [
+								{
+									"value": "H",
+									"text": "Homme"
+								},
+								{
+									"value": "F",
+									"text": "Femme"
+								},
+								{
+									"value": "A",
+									"text": "Autre"
+								}
+							]
+						},
+						{
+							"type": "radiogroup",
+							"name": "Latéralité",
+							"title": "Êtes-vous droitier(ère) au gaucher(ère)?",
+							"choices": [
+								{
+									"value": "D",
+									"text": "Droitier(ère)"
+								},
+								{
+									"value": "G",
+									"text": "Gaucher(ère)"
+								},
+								{
+									"value": "A",
+									"text": "Ambidextre"
+								}
+							]
+						}
+					],
+					"questionTitleLocation": "top",
+					"navigationButtonsVisibility": "hide",
+					"questionsOrder": "initial"
+				}
+			],
+			"showTitle": false,
+			"showPageTitles": false,
+			"showQuestionNumbers": "off"
+		},
+		"initial2": {
+			"locale": "fr",
+			"pages": [
+				{
+					"name": "page1",
+					"elements": [
+						{
+							"type": "boolean",
+							"name": "R1",
+							"title": "J'ai une vision normale (corrigée ou non)",
+							"labelTrue": "Oui",
+							"labelFalse": "Non"
+						},
+						{
+							"type": "boolean",
+							"name": "R2",
+							"title": "J'ai un antécédent de maladie neurologique ou psychiatrique",
+							"labelTrue": "Oui",
+							"labelFalse": "Non"
+						},
+						{
+							"type": "boolean",
+							"name": "R3",
+							"title": "J'ai un trouble moteur",
+							"labelTrue": "Oui",
+							"labelFalse": "Non"
+						}
+					],
+					"questionTitleLocation": "top",
+					"navigationButtonsVisibility": "hide",
+					"questionsOrder": "initial"
+				}
+			],
+			"showTitle": false,
+			"showPageTitles": false,
+			"showQuestionNumbers": "off"
+		},
+		"break": {
+			"locale": "fr",
+			"pages": [
+				{
+					"name": "page",
+					"elements": [
+						{
+							"type": "rating",
+							"name": "Q1",
+							"title": {
+								"fr": "En moyenne, pensez-vous avoir cliqué plus souvent avant l’ordinateur ?"
+							},
+							"rateMax": 5,
+							"minRateDescription": {
+								"fr": "Pas du tout"
+							},
+							"maxRateDescription": {
+								"fr": "Absolument"
+							}
+						},
+						{
+							"type": "rating",
+							"name": "Q2",
+							"title": {
+								"fr": "Pensez-vous avoir correctement répondu à la fin de chaque essai si c'était vous ou bien l'ordinateur qui avait cliqué ?"
+							},
+							"rateMax": 5,
+							"minRateDescription": {
+								"fr": "Pas du tout"
+							},
+							"maxRateDescription": {
+								"fr": "Absolument"
+							}
+						}
+					],
+					"questionTitleLocation": "top",
+					"navigationButtonsVisibility": "hide",
+					"questionsOrder": "initial"
+				}
+			],
+			"showTitle": false,
+			"showPageTitles": false,
+			"showQuestionNumbers": "off"
+		},
+		"final": [
+			{
+				"locale": "fr",
+				"pages": [
+					{
+						"name": "page",
+						"elements": [
+							{
+								"type": "rating",
+								"name": "Q1",
+								"title": {
+									"fr": "1. Le fait que je devienne ou non un leader dépend surtout de mes capacités."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q2",
+								"title": {
+									"fr": "2. Ma vie est en grande partie dirigée par des événements dus au hasard."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q3",
+								"title": {
+									"fr": "3. J’ai le sentiment que ce qui arrive dans ma vie est principalement décidé par les gens puissants."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q4",
+								"title": {
+									"fr": "4. Le fait d’avoir ou de ne pas avoir d’accident de voiture dépend surtout de mon habileté au volant."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							}
+						],
+						"questionTitleLocation": "top",
+						"navigationButtonsVisibility": "hide",
+						"questionsOrder": "initial"
+					}
+				],
+				"showTitle": false,
+				"showPageTitles": false,
+				"showQuestionNumbers": "off"
+			},
+			{
+				"locale": "fr",
+				"pages": [
+					{
+						"name": "page",
+						"elements": [
+							{
+								"type": "rating",
+								"name": "Q5",
+								"title": {
+									"fr": "5. Quand je fais des projets, je suis presque toujours sûr de les réussir."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q6",
+								"title": {
+									"fr": "6. Il n’est souvent pas possible de protéger mes intérêts contre des événements malchanceux."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q7",
+								"title": {
+									"fr": "7. Quand j’obtiens ce que je veux, c’est généralement par chance."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q8",
+								"title": {
+									"fr": "8. Sans l’intervention de personnes bien placées, on ne me donnera pas un poste à responsabilités même si je suis capable de l’occuper."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							}
+						],
+						"questionTitleLocation": "top",
+						"navigationButtonsVisibility": "hide",
+						"questionsOrder": "initial"
+					}
+				],
+				"showTitle": false,
+				"showPageTitles": false,
+				"showQuestionNumbers": "off"
+			},
+			{
+				"locale": "fr",
+				"pages": [
+					{
+						"name": "page",
+						"elements": [
+							{
+								"type": "rating",
+								"name": "Q9",
+								"title": {
+									"fr": "9. Le nombre d’amis que j’ai dépend de mon degré de gentillesse personnelle."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q10",
+								"title": {
+									"fr": "10. J’ai souvent constaté que ce qui doit arriver arrive."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q11",
+								"title": {
+									"fr": "11. Le déroulement de mon existence est essentiellement sous le contrôle des gens puissants."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q12",
+								"title": {
+									"fr": "12. Le fait d’avoir ou de ne pas avoir d’accident de voiture est avant tout une question de hasard."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							}
+						],
+						"questionTitleLocation": "top",
+						"navigationButtonsVisibility": "hide",
+						"questionsOrder": "initial"
+					}
+				],
+				"showTitle": false,
+				"showPageTitles": false,
+				"showQuestionNumbers": "off"
+			},
+			{
+				"locale": "fr",
+				"pages": [
+					{
+						"name": "page",
+						"elements": [
+							{
+								"type": "rating",
+								"name": "Q13",
+								"title": {
+									"fr": "13. Les gens comme moi ont très peu de possibilités de défendre leurs intérêts personnels contre ceux de puissants groupes de pression."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q14",
+								"title": {
+									"fr": "14. Pour moi, il n’est pas toujours sage de faire des projets trop longtemps à l’avance car de nombreuses choses s’avèrent être une question de bonne ou de mauvaise fortune."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q15",
+								"title": {
+									"fr": "15. Pour obtenir ce que je veux, il faut que cela plaise aux personnes placées au-dessus de moi."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q16",
+								"title": {
+									"fr": "16. Parvenir ou non à être un leader dépend de la chance que j’aurai d’être à la bonne place au bon moment."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							}
+						],
+						"questionTitleLocation": "top",
+						"navigationButtonsVisibility": "hide",
+						"questionsOrder": "initial"
+					}
+				],
+				"showTitle": false,
+				"showPageTitles": false,
+				"showQuestionNumbers": "off"
+			},
+			{
+				"locale": "fr",
+				"pages": [
+					{
+						"name": "page",
+						"elements": [
+							{
+								"type": "rating",
+								"name": "Q17",
+								"title": {
+									"fr": "17. Si des gens importants décidaient qu’ils ne m’aimaient pas, alors je ne me ferais probablement pas beaucoup d’amis."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q18",
+								"title": {
+									"fr": "18. Je peux à peu près déterminer ce qui arrivera dans ma vie."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q19",
+								"title": {
+									"fr": "19. En général, je suis capable de protéger mes intérêts personnels."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q20",
+								"title": {
+									"fr": "20. Le fait qu’il m’arrive ou non un accident de voiture dépend surtout des autres conducteurs."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							}
+						],
+						"questionTitleLocation": "top",
+						"navigationButtonsVisibility": "hide",
+						"questionsOrder": "initial"
+					}
+				],
+				"showTitle": false,
+				"showPageTitles": false,
+				"showQuestionNumbers": "off"
+			},
+			{
+				"locale": "fr",
+				"pages": [
+					{
+						"name": "page",
+						"elements": [
+							{
+								"type": "rating",
+								"name": "Q21",
+								"title": {
+									"fr": "21. Quand j’obtiens ce que je veux, c’est en général parce que j’ai travaillé dur pour cela."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q22",
+								"title": {
+									"fr": "22. Afin que mes projets réussissent, je m’assure qu’ils correspondent aux désirs des personnes qui ont du pouvoir sur moi."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q23",
+								"title": {
+									"fr": "23. Ce sont mes propres actions qui déterminent ma vie."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							},
+							{
+								"type": "rating",
+								"name": "Q24",
+								"title": {
+									"fr": "24. Que j’aie peu ou beaucoup d’amis, c’est avant tout une question de destinée."
+								},
+								"rateMax": 6,
+								"minRateDescription": {
+									"fr": "Pas du tout d'accord"
+								},
+								"maxRateDescription": {
+									"fr": "Tout à fait d'accord"
+								}
+							}
+						],
+						"questionTitleLocation": "top",
+						"navigationButtonsVisibility": "hide",
+						"questionsOrder": "initial"
+					}
+				],
+				"showTitle": false,
+				"showPageTitles": false,
+				"showQuestionNumbers": "off"
+			}
+		]
+	}
+}

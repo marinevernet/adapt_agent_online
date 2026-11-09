@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>The Agency Experiment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.3/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.11/lottie.min.js"></script>
+    <script src="https://unpkg.com/survey-jquery@1.8.59/survey.jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/is_js/0.9.0/is.min.js"></script>
+    <script type="text/javascript" src="scripts/detect_gpu_js.js"></script>
+    <script type="text/javascript" src="scripts/normal_distribution_js.js"></script>
+    <script type="text/javascript" src="scripts/ml_js.js"></script>
+    <script type="text/javascript" src="scripts/predictor.js"></script>
+    <script type="text/javascript" src="scripts/helper_functions.js"></script>
+    <script type="text/javascript" src="scripts/mouse_processor.js"></script>
+    <script type="text/javascript" src="scripts/data_manager.js"></script>
+    <script type="text/javascript" src="scripts/info_screen.js"></script>
+    <script type="text/javascript" src="scripts/trial_screen.js"></script>
+    <script type="text/javascript" src="scripts/pavlovia_interface.js"></script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+    <link href="https://unpkg.com/survey-jquery@1.8.59/modern.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/trial_screen.css">
+    <link rel="stylesheet" type="text/css" href="styles/progress_bar.css">
+    <link rel="stylesheet" type="text/css" href="styles/side_panel.css">
+    <link rel="stylesheet" type="text/css" href="styles/stimuli_grid.css">
+    <link rel="stylesheet" type="text/css" href="styles/warning_popup.css">
+    <link rel="stylesheet" type="text/css" href="styles/feedback_buttons.css">
+    <link rel="stylesheet" type="text/css" href="styles/info_screen.css">
+</head>
+
+<body onload="main();">
+
+    <video id="background" autoplay loop muted playsinline src="resources/Animations/Background1.mp4"></video>
+
+    <div id="screenWrapper">
+
+        <!-- Information Screen -->
+        <div id="infoScreen" class="screen">
+            <div id="infoScreenBox">
+                <div id="infoScreenBoxWrapper">
+                    <div id="infoScreenHeaderBG"></div>
+                    <div id="infoScreenHeader"></div>
+                    <div id="infoScreenContent"></div>
+                    <a id="infoScreenPrevButton" class="customButton"><img id="backArrow"
+                            src="resources/Miscellaneous Graphics/BackArrow.svg" /></a>
+                    <a id="infoScreenNextButton" class="customButton"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trial Screen -->
+        <div id="trialScreen" class="screen">
+            <div id="game">
+                <div id="progressBar" class="progressBar">
+                    <div id="progressBarOutline">
+                        <div id="progressBarFilling"></div>
+                    </div>
+                </div>
+                <div id="sidePanel" class="sidePanel">
+                    <div id="trialCounter">
+                        <div id="trialCounterLabel"><span>ESSAI</span></div>
+                        <div id="trialCounterNumber"></div>
+                        <div id="blockCounter"></div>
+                    </div>
+                    <div id="onScreenInstructions"></div>
+                    <div id="lockAnimation"></div>
+                </div>
+                <div id="gameGrid" class="gameGrid">
+                    <div id="gameGridWrapper">
+                        <div id="stimuliGrid"></div>
+                        <div id="transitionOverlay1"></div>
+                        <div id="warningPopup">
+                            <div id="warningPopupBox">
+                                <div id="warningPopupBoxWrapper">
+                                    <img class="dangerSign" src="resources/Miscellaneous Graphics/DangerSign.svg" />
+                                    <div id="warningPopupBoxContent">
+                                        <div id="warningPopupMessage"></div>
+                                        <div id="instructionsReminder">
+                                            <div id="instructionsReminderTitle"><span>Rappel des instructions</span>
+                                            </div>
+                                            <div class="instructionsReminderContent">
+                                                <video class="instructionsReminderGif" autoplay loop muted playsinline
+                                                    src="resources/Animations/InstructionsMemo_fr.mp4"></video>
+                                                <div id="popupInstructionsReminderList"
+                                                    class="instructionsReminderList">
+                                                    <ol>
+                                                        <li>Cherchez l'intrus</li>
+                                                        <li>Appuyez sur la barre espace</li>
+                                                        <li>Déplacez votre souris d'un seul mouvement fluide</li>
+                                                        <li>Cliquez sur l'intrus</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a id="retryButton">Réessayer</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="warningOverlayBox">
+                            <div id="warningOverlayBoxWrapper">
+                                <img class="dangerSign" src="resources/Miscellaneous Graphics/DangerSign.svg" />
+                                <div id="warningOverlayBoxContent">
+                                    <div id="warningOverlayMessage" onselectstart="return false">Veuillez <span
+                                            style="color: red;">ne pas bouger la souris</span> lorsque la grille est
+                                        verrouillée</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="bordersMask">
+                            <div id="borders">
+                                <div id="bordersWrapper1">
+                                    <div id="borderH" class="border"></div>
+                                    <div id="borderV" class="border"></div>
+                                    <div id="borderCircle1"></div>
+                                    <div id="borderCircle2"></div>
+                                </div>
+                                <div id="bordersWrapper2">
+                                    <div id="borderH" class="border"></div>
+                                    <div id="borderV" class="border"></div>
+                                    <div id="borderCircle1"></div>
+                                    <div id="borderCircle2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="feedbackSpotlight"></div>
+                    <div id="feedbackSpotlightBorder"></div>
+                    <div id="feedback" class="feedback">
+                        <img id="feedbackQuestion" src="resources/Miscellaneous Graphics/FeedbackQuestion_fr.png" />
+                        <div id="feedbackButtons">
+                            <div class="feedbackButtonWrapper">
+                                <div class="feedbackButton" id="humanClickFeedback">
+                                    <img class="feedbackButtonIcon"
+                                        src="resources/Miscellaneous Graphics/HumanClickButton_fr.png"></img>
+                                </div>
+                            </div>
+                            <div class="feedbackButtonWrapper">
+                                <div class="feedbackButton" id="machineClickFeedback">
+                                    <img class="feedbackButtonIcon"
+                                        src="resources/Miscellaneous Graphics/MachineClickButton_fr.png"></img>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Debug Screen -->
+    <div id="debugScreen" class="screen">
+        <table width="100%" style="margin-top: 50px;">
+            <th width="50%">DEBUG: Vitesse de la souris</th>
+            <th width="50%">DEBUG: Position de la souris</th>
+            <tr>
+                <td><canvas id="mesuresVitesse"></canvas></td>
+                <td><canvas id="mesuresPosition"></canvas></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Choose Language Screen -->
+    <div id="chooseLanguage" class="screen">
+        <div id="chooseLanguageWrapper">
+            <div id="chooseLanguageQuestion"><span>?</span></div>
+            <div id="flagWrapper">
+                <div id="fr" class="languageFlag">
+                    <img src="resources/Miscellaneous Graphics/Flag_fr.svg" />
+                    <div>Français</div>
+                </div>
+                <div id="en" class="languageFlag">
+                    <img src="resources/Miscellaneous Graphics/Flag_en.svg" />
+                    <div>English</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrong Browser Screens -->
+    <div id="wrongBrowserScreen" class="screen">
+        <div>
+            <p>Malheureusement, vous ne pouvez pas jouer à ce jeu sur ce navigateur.
+                <br /><br />Vous devez être soit sur <span style='color: red'>Google Chrome</span>, <span
+                    style='color: red'>Microsoft Edge</span> ou <span style='color: red'>Opera</span>
+            </p>
+        </div>
+    </div>
+    <div id="hardwareAccelerationScreen" class="screen">
+        <div>
+            <p>Malheureusement, vous ne pouvez pas jouer à ce jeu sur ce navigateur.
+                <br /><br />Il faut que <span style='color: red'>l'accélération matérielle</span> soit activée dans les
+                paramètres de votre navigateur.
+            </p>
+        </div>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pauseScreen" class="screen">
+        <div>
+            <p>Ce jeu doit être joué en mode plein écran.
+                <br /><br />Si vous souhaitez prendre une pause, vous pouvez le faire maintenant.
+                <br /><br />Lorsque vous reprendrez, vous serez à nouveau mis(e) en mode plein écran.
+                <br /><br />
+            </p>
+            <a id="resumeButton" class="customButton">Reprendre</a>
+        </div>
+    </div>
+
+    <!-- Different infoScreen contents -->
+    <div id="infoScreenContents"></div>
+
+    <!-- Miscellaneous overlays -->
+    <div id="transitionOverlay0"></div>
+    <div id="transitionOverlay2"></div>
+    <div id="cursorFollower"></div>
+    <div id="growingCircle"></div>
+    <div id="impactAnimation"></div>
+
+</body>
+<script>
+
+    /* MISCELLANEOUS VARIABLES */
+    var currentScreen; var trialScreen; var infoScreen;
+    var timeSampleRate = 16;
+    var trialStartTime = -1;
+    var regressionInputs = [];
+    var regressionOutputs = [];
+    var sumNearTargetLobes = 0;
+    var averageNearTargetLobes = 0;
+    var clickDelaysAfterGettingCloseToSpecialStimuli = [];
+    var predictionErrors = [];
+    var searchTimes = [[]];
+    var numWarnings = [0];
+    var falsePositivesCounter = { num: 0, inARow: 0 };
+    var displayFalsePositivesWarning = false;
+    var difficulty = 1;
+    var phase = 1;
+    var infoScreenCount = 1;
+    var infoScreenGoingBack = false;
+    var timelineCount = 0;
+    var isDisplayingMiniBreakScreen = false;
+    var hasDisplayedBreakScreen = false;
+    var hasEndedBlock = false;
+    var hasStarted = false;
+    var hasEnded = false;
+    var perceivedClickTypes = [];
+    var language = (window.navigator.userLanguage || window.navigator.language).substring(0, 2);
+    if (language != 'fr') { language = 'en'; }
+    var experimentTexts = {};
+    var rememberingFactor = 50;
+
+    /* TRANSITION ANIMATIONS */
+    var isTransitioning = false;
+    var transitionAnimations = [];
+    transitionAnimations.push({
+        anim: bodymovin.loadAnimation({
+            container: document.getElementById('transitionOverlay0'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'resources/Animations/Transition0.json',
+            rendererSettings: {
+                preserveAspectRatio: 'none'
+            },
+            framerate: 60
+        }),
+        switchFrame: 20
+    });
+    transitionAnimations.push({
+        anim: bodymovin.loadAnimation({
+            container: document.getElementById('transitionOverlay1'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'resources/Animations/Transition1.json',
+            framerate: 60
+        }),
+        switchFrame: 24
+    });
+    transitionAnimations.push({
+        anim: bodymovin.loadAnimation({
+            container: document.getElementById('transitionOverlay2'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'resources/Animations/Transition2.json',
+            rendererSettings: {
+                preserveAspectRatio: 'none'
+            },
+            framerate: 60
+        }),
+        switchFrame: 14
+    });
+
+    /* OTHER ANIMATIONS */
+    var lockAnimation = bodymovin.loadAnimation({
+        container: document.getElementById('lockAnimation'),
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path: 'resources/Animations/Lock.json',
+        framerate: 60
+    });
+    var impactAnimation = bodymovin.loadAnimation({
+        container: document.getElementById('impactAnimation'),
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path: 'resources/Animations/Impact.json',
+        framerate: 60
+    });
+
+    /* STIMULI IMAGES */
+    var stimuliParams = {
+        1: { "orientationStep": 45, "nRange": [3, 5], "numImages": 3, "images": [] },
+        2: { "orientationStep": 45, "nRange": [3, 5], "numImages": 3, "images": [] },
+        3: { "orientationStep": 90, "nRange": [3, 5], "numImages": 4, "images": [] },
+        4: { "orientationStep": 90, "nRange": [3, 4], "numImages": 3, "images": [] },
+        5: { "orientationStep": 90, "nRange": [4, 6], "numImages": 2, "images": [] },
+        6: { "orientationStep": 45, "nRange": [3, 5], "numImages": 2, "images": [] },
+        7: { "orientationStep": 45, "nRange": [3, 5], "numImages": 2, "images": [] },
+        8: { "orientationStep": 90, "nRange": [3, 5], "numImages": 3, "images": [] },
+        9: { "orientationStep": 90, "nRange": [3, 5], "numImages": 2, "images": [] },
+        10: { "orientationStep": 90, "nRange": [3, 5], "numImages": 4, "images": [] },
+        11: { "orientationStep": 90, "nRange": [3, 5], "numImages": 4, "images": [] },
+        12: { "orientationStep": 90, "nRange": [3, 5], "numImages": 2, "images": [] },
+        13: { "orientationStep": 180, "nRange": [3, 5], "numImages": 2, "images": [] },
+    };
+    var numImageSets = Object.keys(stimuliParams).length;
+    for (let i = 1; i <= numImageSets; i++) {
+        for (let j = 1; j <= stimuliParams[i]["numImages"]; j++) {
+            let images = []
+            for (let k = 1; k <= 4; k++) {
+                let img = new Image();
+                img.className = "stimuli";
+                img.src = 'resources/Item Graphics/' + i + '_' + j + '_' + k + '.svg';
+                img.draggable = "false";
+                img.unselectable = 'on';
+                img.ondragstart = "return false;"
+                images.push(img);
+            }
+            stimuliParams[i]["images"].push(images);
+        }
+    }
+
+    /* FONT GRAPHICS */
+    var numberFontImages = [];
+    for (let i = 0; i < 10; i++) {
+        let img = new Image();
+        img.className = "numberFontImage";
+        img.src = 'resources/Font Graphics/' + i + '.svg';
+        img.draggable = "false";
+        img.unselectable = 'on';
+        img.ondragstart = "return false;"
+        numberFontImages.push(img);
+    }
+
+    /* PROGRESS BAR LINES */
+    var nbBlocs = 8;
+    for (let i = 1; i < nbBlocs + 1; i++) {
+        let line = document.createElement("div");
+        line.className = "progressBarLine";
+        line.style.left = i * 100 / nbBlocs + '%';
+        $('#progressBarOutline').append(line);
+    }
+
+    /* TRIAL / BLOCK COUNTERS */
+    var trialsPerBlock = [5, 80, 80, 80, 80, 80, 80, 80, 80]; // HAS TO BE A MULTIPLE OF 20!!!
+    var block = 0;
+    var trial = -1;
+    var totalTrials = 0;
+    var keptTrials = 0;
+    var timesMovedDuringLockedScreen = 0;
+
+    /* FEEDBACK BUTTON STRIPES ANIMATION */
+    let containerH = document.getElementById("humanClickFeedback");
+    let containerM = document.getElementById("machineClickFeedback");
+    let color1H = "#7AB0FF";
+    let color2H = "#3888FF";
+    let color1M = "#FFC982";
+    let color2M = "#FF9912";
+    let tempColorH;
+    let tempColorM;
+    let stripeOffset = 0;
+    containerH.style.setProperty("--color1H", color1H);
+    containerH.style.setProperty("--color2H", color2H);
+    containerM.style.setProperty("--color1M", color1M);
+    containerM.style.setProperty("--color2M", color2M);
+    function animateFeedbackStripes() {
+        stripeOffset += 0.0521;
+        if (stripeOffset > 2.0833) {
+            stripeOffset = 0;
+            tempColorH = color2H; color2H = color1H; color1H = tempColorH;
+            tempColorM = color2M; color2M = color1M; color1M = tempColorM;
+            containerH.style.setProperty("--color1H", color1H);
+            containerH.style.setProperty("--color2H", color2H);
+            containerM.style.setProperty("--color1M", color1M);
+            containerM.style.setProperty("--color2M", color2M);
+        }
+        containerH.style.setProperty("--offsetH", stripeOffset + "vw");
+        containerM.style.setProperty("--offsetM", stripeOffset + "vw");
+        requestAnimationFrame(animateFeedbackStripes);
+    }
+    animateFeedbackStripes();
+
+    /* SURVEYS */
+    Survey.StylesManager.applyTheme("modern");
+    var initialSurveyResults = "";
+    var initialSurvey2Results = "";
+    var postTrainingSurveyResults = "";
+    var breakSurveyResults = {};
+    var freeComments1Results = ""; var freeComments2Results = ""
+    var finalSurveyResults = [{}, {}, {}, {}, {}, {}];
+    var initialSurvey;
+    var breakSurvey;
+    var finalSurveys;
+
+</script>
+
+</html>

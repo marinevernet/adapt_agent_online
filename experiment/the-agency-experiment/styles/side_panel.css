@@ -1,0 +1,74 @@
+#sidePanel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+}
+
+#trialCounter {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 30px;
+}
+#trialCounterLabel {
+	font-size: 2.1vw;
+	font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-weight: bold;	
+	letter-spacing: 5px;
+	width: 97%;
+	overflow: hidden;
+	text-align: center;
+}
+#trialCounterLabel > span {
+    position: relative;
+    display: inline-block;
+}
+#trialCounterLabel > span::before,
+#trialCounterLabel > span::after {
+	content: '';
+    position: absolute;
+    top: 50%;
+    border-bottom: 0.35rem solid #EC1C3A;
+    width: 10vw;
+    margin: 0 0.4em;
+}
+#trialCounterLabel > span::before {
+	right: 100%;
+}
+#trialCounterLabel > span::after {
+	left: 100%;
+}
+#trialCounterNumber {
+	text-align: center;
+}
+#trialCounterNumber > img {
+	width: 40%;
+	display: inline;
+	margin: 0 -9%;
+	transform-origin: 50% 100%;
+}
+#blockCounter {
+	text-align: center;
+	font-size: 1.4vw;
+	margin-top: 1em;
+	font-weight: bold;	
+	letter-spacing: 2px;
+}
+
+#onScreenInstructions {
+	text-align: center;
+	font-size: 1.6vw;
+	font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-weight: bold;
+	width: 75%;
+	padding: 5vw 0;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+	border-top: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+#lockAnimation {
+	width: 80%;
+	margin-bottom: -0.781vw /*-15px*/;
+}

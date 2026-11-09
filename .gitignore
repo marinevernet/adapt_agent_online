@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+
+# R
+.Rapp.history
+.Rhistory

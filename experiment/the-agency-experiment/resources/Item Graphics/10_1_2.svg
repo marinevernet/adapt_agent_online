@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="256pt" height="256pt" viewBox="0 0 265 265" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="lg">
+    <stop
+       offset="0"
+       style="stop-color:#3888FF;stop-opacity:1" />
+    <stop
+       offset="1"
+       style="stop-color:#2A66BF;stop-opacity:1" />
+  </linearGradient>
+</defs>
+<g id="#ffffffff" transform="translate(2.25, 2.25)">
+<path fill="#ffffff" opacity="1.00" d=" M 127.46 0.00 L 128.52 0.00 C 135.78 4.67 143.40 8.75 150.83 13.13 C 180.15 30.15 209.64 46.90 238.85 64.09 C 238.89 106.69 238.89 149.30 238.85 191.91 C 211.55 208.00 183.98 223.64 156.57 239.56 C 147.24 245.07 137.68 250.18 128.54 256.00 L 127.49 256.00 C 118.96 250.57 110.04 245.79 101.34 240.66 C 73.30 224.37 45.09 208.37 17.15 191.92 C 17.11 149.31 17.11 106.70 17.15 64.09 C 46.78 46.65 76.69 29.67 106.42 12.41 C 113.44 8.27 120.63 4.44 127.46 0.00 M 71.43 95.39 C 71.42 117.13 71.42 138.87 71.43 160.62 C 90.25 171.55 109.07 182.49 128.00 193.24 C 146.93 182.49 165.75 171.55 184.57 160.62 C 184.58 138.87 184.58 117.13 184.57 95.38 C 165.75 84.45 146.93 73.51 128.00 62.76 C 109.07 73.51 90.25 84.44 71.43 95.39 Z" style="opacity:1;fill:url(#lg);fill-opacity:1;stroke:#000000;stroke-width:4.5;stroke-miterlimit:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"/>
+</g>
+</svg>
